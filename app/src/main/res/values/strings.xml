@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ABC Jobs</string>
+    <string name="title_activity_dashboard">Dashboard</string>
+</resources>
