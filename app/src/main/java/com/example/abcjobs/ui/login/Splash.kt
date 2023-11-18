@@ -24,6 +24,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
@@ -35,17 +36,18 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun SplashScreen(navController: NavController, application: Application){
+    val context = LocalContext.current
     var progress by remember { mutableFloatStateOf(0f) }
-    var textoCarga by remember { mutableStateOf ("Loading...") }
+    var textoCarga by remember { mutableStateOf (context.getString(R.string.loading)) }
 
     LaunchedEffect(Unit){
         val sec = Security(application)
 
-        textoCarga = "Checking connection with Servers..."
+        textoCarga = context.getString(R.string.splash_checking_servers)
         withContext(Dispatchers.IO) {
             try {
                 if (sec.pong()) {
-                    textoCarga = "Users checked"
+                    textoCarga = context.getString(R.string.splash_users_checked)
                     for (i in 0..100) {
                         progress = i / 100f
                         delay(10)

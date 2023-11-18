@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ABC Jobs</string>
+    <string name="greeting">Hola,</string>
+    <string name="username">Usuario</string>
+    <string name="email">Correo electrónico</string>
+    <string name="password">Contraseña</string>
+    <string name="loading">...Cargando</string>
+    <string name="splash_checking_servers">Comprobando conexión con los servidores</string>
+    <string name="splash_users_checked">Usuarios comprobados</string>
+    <string name="login_welcome">Bienvenido de vuelta,</string>
+    <string name="login_button">Iniciar Sesión</string>
+    <string name="login_invalid_user">Usuario o contraseña incorrectos</string>
+    <string name="login_do_not_have_account">¿No tienes una cuenta?</string>
+    <string name="login_register">Registrarse</string>
+    <string name="login_asset_required">Campo requerido</string>
+    <string name="register_welcome">Crear una cuenta</string>
+    <string name="register_select_profile">Seleccionar un perfil</string>
+    <string name="register_button">Registrarse</string>
+    <string name="register_login">Iniciar Sesión</string>
+    <string name="register_candidate">Candidato</string>
+    <string name="register_company">Compañía</string>
+    <string name="register_have_account">¿Ya tienes una cuenta?</string>
+    <string name="login_select_lang">Seleccione un idioma</string>
+    <string name="login_english">Inglés</string>
+    <string name="login_spanish">Español</string>
+</resources>

@@ -36,6 +36,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 
@@ -96,7 +98,9 @@ fun TitleText(text: String) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginCampo(text: MutableState<String>, labelValue:String, painter: Int, validators: Array<String> = arrayOf("Required") , password: Boolean = false){
+    val context = LocalContext.current
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var clicked by rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -109,11 +113,25 @@ fun LoginCampo(text: MutableState<String>, labelValue:String, painter: Int, vali
                 text.value = it
                 for (validator in validators) {
                     if (validator == "Required" && it.isEmpty()) {
-                        errorMessage = "Field is required"
+                        errorMessage = context.getString(R.string.login_asset_required)
                     }else{
                         errorMessage = null
                     }
                 }},
+            modifier = Modifier.onFocusChanged {focusState ->
+                if (focusState.isFocused) {
+                    clicked = true
+                }
+                if (!focusState.isFocused && clicked) {
+                    for (validator in validators) {
+                        if (validator == "Required" && text.value.isEmpty()) {
+                            errorMessage = context.getString(R.string.login_asset_required)
+                        }else{
+                            errorMessage = null
+                        }
+                    }
+                }
+            },
             label = { Text(labelValue) },
             isError = errorMessage != null,
             leadingIcon = { Image(
