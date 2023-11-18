@@ -43,11 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.Dashboard
-import com.example.abcjobs.data.models.Token
-import com.example.abcjobs.data.viewmodels.AuthViewModel
 import com.example.abcjobs.services.network.Security
 
-import com.example.abcjobs.ui.navigation.LoginScreens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
@@ -62,22 +59,8 @@ fun Login(navController: NavController, application: Application) {
         LoginBody(navController, application)
     }
 }
-
-fun setLocale(activity: Activity, languageCode: String) {
-    val locale = Locale(languageCode)
-    Locale.setDefault(locale)
-
-    val config = Configuration(activity.resources.configuration)
-    config.setLocale(locale)
-
-    activity.createConfigurationContext(config)
-    activity.recreate()
-}
-
 @Composable
 fun LoginBody(navController: NavController, application: Application) {
-
-    lateinit var viewModel: AuthViewModel
     var sec = Security(application)
 
     Column (
@@ -111,18 +94,21 @@ fun LoginBody(navController: NavController, application: Application) {
             val json = JSONObject()
                 .put("username", username.value)
                 .put("password", password.value)
+            valid.value = false
             LaunchedEffect(Unit){
                 withContext(Dispatchers.IO) {
                     try {
+                        Security.getInstance(application).auth(json, context)
                         val intent = Intent(context, Dashboard::class.java)
                         context.startActivity(intent)
-                        val response: Token = Security.getInstance(application).auth(json)
-                        Log.d("LoginLogs", "Response:${response.token}")
                     }catch (e: Exception){
+                        error = true
                         Log.e("LoginLogs", "Error: ${e.message}")
                     }
                 }
             }
+            valid.value = true
+            clicked = false
         }
 
         Column(
@@ -181,7 +167,6 @@ fun LoginBody(navController: NavController, application: Application) {
                                 putString("language", languageCode)
                                 apply()
                             }
-                            // Reinicia la actividad
                             (context as Activity).recreate() },
                         modifier = Modifier
                             .padding(horizontal = 25.dp)
@@ -201,16 +186,17 @@ fun LoginBody(navController: NavController, application: Application) {
             }
         )
 
-        NormalText(text = context.getString(R.string.login_do_not_have_account))
+        /*NormalText(text = context.getString(R.string.login_do_not_have_account))
 
         LoginLink(context.getString(R.string.login_register)) {
             navController.navigate(LoginScreens.Register.route)
-        }
+        }*/
     }
 }
 
 @Preview(showBackground = true)
 @Composable
+
 fun LoginPreview() {
     val nav = rememberNavController()
     Login(nav, Application())
