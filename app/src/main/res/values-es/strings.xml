@@ -24,4 +24,5 @@
     <string name="login_select_lang">Seleccione un idioma</string>
     <string name="login_english">Inglés</string>
     <string name="login_spanish">Español</string>
+    <string name="login_asset_alfanumerico">El campo debe contener texto alfanumérico</string>
 </resources>

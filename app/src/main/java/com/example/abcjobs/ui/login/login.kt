@@ -96,10 +96,12 @@ fun LoginBody(navController: NavController, application: Application) {
         var selectedItem by remember { mutableStateOf(context.getString(R.string.login_select_lang)) }
         val items = listOf(context.getString(R.string.login_english), context.getString(R.string.login_spanish))
 
+        var valid = remember { mutableStateOf(false) }
+
         NormalText(context.getString(R.string.greeting))
         TitleText(context.getString(R.string.login_welcome))
-        LoginCampo(username, context.getString(R.string.username), R.drawable.user)
-        LoginCampo(password, context.getString(R.string.password), R.drawable.padlock, password = true)
+        LoginCampo(username, context.getString(R.string.username), R.drawable.user, validators = arrayOf("Alphanumeric", "Required"), valid = valid)
+        LoginCampo(password, context.getString(R.string.password), R.drawable.padlock, password = true, valid = valid)
 
         if(error){
             NormalText(context.getString(R.string.login_invalid_user))
@@ -115,7 +117,6 @@ fun LoginBody(navController: NavController, application: Application) {
                         val intent = Intent(context, Dashboard::class.java)
                         context.startActivity(intent)
                         val response: Token = Security.getInstance(application).auth(json)
-                        // Dirigir a la actividad Dashboard
                         Log.d("LoginLogs", "Response:${response.token}")
                     }catch (e: Exception){
                         Log.e("LoginLogs", "Error: ${e.message}")
@@ -194,7 +195,7 @@ fun LoginBody(navController: NavController, application: Application) {
                 .padding(16.dp)
         )
 
-        ButtonLogin(context.getString(R.string.login_button),
+        ButtonLogin(context.getString(R.string.login_button), valid = valid,
             onClick = {
                 clicked = true
             }
