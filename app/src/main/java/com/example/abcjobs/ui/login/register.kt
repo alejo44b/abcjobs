@@ -28,6 +28,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -58,15 +59,21 @@ fun RegisterBody(navController: NavController) {
             .padding(horizontal = 0.dp, vertical = 30.dp),
         verticalArrangement = Arrangement.Center
     ){
+        val context = LocalContext.current
         var expanded by remember { mutableStateOf(false) }
-        var selectedItem by remember { mutableStateOf("Select a profile") }
-        val items = listOf("candidato", "empresa")
 
-        NormalText("Hey there,")
-        TitleText("Create an Account")
-        /*LoginCampo("Username", R.drawable.user)
-        LoginCampo("Email", R.drawable.mail)
-        LoginCampo("Password", R.drawable.padlock, null, true)*/
+        var username = remember { mutableStateOf("") }
+        var email = remember { mutableStateOf("") }
+        var password = remember { mutableStateOf("") }
+
+        var selectedItem by remember { mutableStateOf(context.getString(R.string.register_select_profile)) }
+        val items = listOf(context.getString(R.string.register_candidate), context.getString(R.string.register_company))
+
+        NormalText(context.getString(R.string.greeting))
+        TitleText(context.getString(R.string.register_welcome))
+        LoginCampo(username, context.getString(R.string.username), R.drawable.user)
+        LoginCampo(email, context.getString(R.string.email), R.drawable.mail)
+        LoginCampo(password, context.getString(R.string.password), R.drawable.padlock, password = true)
         Divider(
             color = MaterialTheme.colorScheme.surfaceVariant,
             modifier = Modifier
@@ -129,9 +136,9 @@ fun RegisterBody(navController: NavController) {
             modifier = Modifier
                 .padding(16.dp)
         )
-        ButtonLogin("Register", {})
-        NormalText(text = "Already have an account?")
-        LoginLink("Login"){
+        ButtonLogin(context.getString(R.string.register_button), {})
+        NormalText(text = context.getString(R.string.register_have_account))
+        LoginLink(context.getString(R.string.register_login)){
             navController.navigate(LoginScreens.Login.route)
         }
     }
