@@ -28,4 +28,22 @@
     <string name="login_english">English</string>
     <string name="login_spanish">Spanish</string>
     <string name="login_asset_alfanumerico">Field must contain alphanumeric text</string>
+    <string name="menu_newCandidate">New Candidate</string>
+    <string name="menu_logout">Logout</string>
+    <string name="layout_maestria">Software Engineering Magister</string>
+    <string name="layout_grupo">MISO - Group 12</string>
+    <string name="layout_home">Home</string>
+    <string name="newCan_name">Name</string>
+    <string name="newCan_Nacionalidad">Nationality</string>
+    <string name="newCan_profesion">Profession</string>
+    <string name="newCan_Specialization">Specialization</string>
+    <string name="newCan_Resumen">Profile Summary</string>
+    <string name="newCan_docs">Documents</string>
+    <string name="newCan_exam">Search</string>
+    <string name="newCan_button">Register Candidate</string>
+    <string name="splash_users_not_checked">No response from users</string>
+    <string name="splash_itspecialists_checked">Specialists checked</string>
+    <string name="splash_itspecialists_not_checked">No response from specialists</string>
+    <string name="login_asset_email">The field must contain a valid email address</string>
+    <string name="newCan_docs_button">Search</string>
 </resources>

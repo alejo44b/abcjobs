@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.Security
 import com.example.abcjobs.ui.navigation.LoginScreens
 import kotlinx.coroutines.Dispatchers
@@ -42,20 +43,20 @@ fun SplashScreen(navController: NavController, application: Application){
 
     LaunchedEffect(Unit){
         val sec = Security(application)
+        val itspecialist = ItSpecialistsAdapter(application)
 
         textoCarga = context.getString(R.string.splash_checking_servers)
         withContext(Dispatchers.IO) {
             try {
-                if (sec.pong()) {
-                    textoCarga = context.getString(R.string.splash_users_checked)
-                    for (i in 0..100) {
-                        progress = i / 100f
-                        delay(10)
-                    }
+                textoCarga = if (sec.pong()) context.getString(R.string.splash_users_checked) else context.getString(R.string.splash_users_not_checked)
+                for (i in 0..50) {
+                    progress = i / 100f
+                    delay(10)
                 }
-                else
-                {
-                    progress = 0f
+                textoCarga = if (itspecialist.pong()) context.getString(R.string.splash_itspecialists_checked) else context.getString(R.string.splash_itspecialists_not_checked)
+                for (i in 50..100) {
+                    progress = i / 100f
+                    delay(10)
                 }
             }catch (e: Exception){
                 Log.e("SplashScreen", "Error: ${e.message}")

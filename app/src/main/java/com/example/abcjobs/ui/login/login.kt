@@ -44,6 +44,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.Dashboard
 import com.example.abcjobs.services.network.Security
+import com.google.accompanist.insets.imePadding
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -65,11 +66,12 @@ fun LoginBody(navController: NavController, application: Application) {
 
     Column (
         modifier = Modifier
-            .fillMaxHeight(1f),
+            .fillMaxHeight(1f)
+            .imePadding(),
         verticalArrangement = Arrangement.Center
     ){
-        var username = remember { mutableStateOf("") }
-        var password = remember { mutableStateOf("") }
+        val username = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
 
         var error by rememberSaveable { mutableStateOf(false) }
         var clicked by rememberSaveable { mutableStateOf(false) }
@@ -79,7 +81,11 @@ fun LoginBody(navController: NavController, application: Application) {
         var selectedItem by remember { mutableStateOf(context.getString(R.string.login_select_lang)) }
         val items = listOf(context.getString(R.string.login_english), context.getString(R.string.login_spanish))
 
-        var valid = remember { mutableStateOf(false) }
+        val valid = remember { mutableStateOf(false) }
+
+        LaunchedEffect(username.value, password.value) {
+            valid.value = if (username.value.isEmpty() || password.value.isEmpty()) false else valid.value
+        }
 
         NormalText(context.getString(R.string.greeting))
         TitleText(context.getString(R.string.login_welcome))

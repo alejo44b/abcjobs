@@ -25,4 +25,22 @@
     <string name="login_english">Inglés</string>
     <string name="login_spanish">Español</string>
     <string name="login_asset_alfanumerico">El campo debe contener texto alfanumérico</string>
+    <string name="menu_newCandidate">Nuevo Candidato</string>
+    <string name="menu_logout">Cerrar Sesión</string>
+    <string name="layout_maestria">Maestría en ingeniería de Software</string>
+    <string name="layout_grupo">MISO - Grupo 12</string>
+    <string name="layout_home">Inicio</string>
+    <string name="newCan_name">Nombre</string>
+    <string name="newCan_Nacionalidad">Nacionalidad</string>
+    <string name="newCan_profesion">Profesión</string>
+    <string name="newCan_Specialization">Especialización</string>
+    <string name="newCan_Resumen">Resumen del perfil</string>
+    <string name="newCan_docs">Documentos</string>
+    <string name="newCan_exam">Examinar</string>
+    <string name="newCan_button">Registrar Candidato</string>
+    <string name="splash_users_not_checked">No hay respuesta de usuarios</string>
+    <string name="splash_itspecialists_checked">Especialistas comprobado</string>
+    <string name="splash_itspecialists_not_checked">No hay respuesta de especialistas</string>
+    <string name="login_asset_email">El campo debe contener una dirección de correo electrónico válida</string>
+    <string name="newCan_docs_button">Examinar</string>
 </resources>
