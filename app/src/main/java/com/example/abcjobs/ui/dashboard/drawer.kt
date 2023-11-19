@@ -95,21 +95,29 @@ fun DrawerMenu(
                     ) {
                         Column() {
                             DrawerHeader()
-                            DrawerBody(
-                                items = listOf(
+                            val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
+                            val role = sharedPref.getString("role", null)
+
+                            val items =
+                                (if (role == "candidato") listOf(
                                     MenuItem(
                                         id = "newCandidate",
                                         title = context.getString(R.string.menu_newCandidate),
                                         icon = Icons.Filled.AccountCircle,
                                         contentDescription = context.getString(R.string.menu_newCandidate)
-                                    ),
-                                    MenuItem(
-                                        id = "logout",
-                                        title = context.getString(R.string.menu_logout),
-                                        icon = Icons.Filled.ExitToApp,
-                                        contentDescription = context.getString(R.string.menu_newCandidate)
-                                    )
-                                ) , onItemClick = {
+                                    )) else listOf()).toMutableList()
+                            items += listOf(
+                                MenuItem(
+                                    id = "logout",
+                                    title = context.getString(R.string.menu_logout),
+                                    icon = Icons.Filled.ExitToApp,
+                                    contentDescription = context.getString(R.string.menu_newCandidate)
+                                )
+                            )
+
+                            DrawerBody(
+                                items = items,
+                                onItemClick = {
                                     if (it.id == "newCandidate") {
                                         navController.navigate("new_candidate")
                                     }
