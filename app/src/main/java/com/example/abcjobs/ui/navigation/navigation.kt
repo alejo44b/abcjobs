@@ -15,6 +15,7 @@ import com.example.abcjobs.ui.dashboard.Home
 import com.example.abcjobs.ui.login.Login
 import com.example.abcjobs.ui.login.Register
 import com.example.abcjobs.ui.login.SplashScreen
+import com.example.abcjobs.ui.technical_tests.TechnicalTests
 
 @Composable
 fun LoginNavigation(application: Application) {
@@ -43,6 +44,12 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
     ){
         composable(DashboardScreens.NewCandidate.route){
             NewCandidate(navController,title, img)
+        }
+        composable(DashboardScreens.TechnicalTests.route){
+            val context = LocalContext.current
+            title.value = context.getString(R.string.tecnical_tests)
+            img.value = R.drawable.test
+            TechnicalTests(title = title, img = img)
         }
         composable(DashboardScreens.Home.route){
             val context = LocalContext.current

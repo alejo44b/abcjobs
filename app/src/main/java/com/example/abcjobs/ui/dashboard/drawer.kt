@@ -26,6 +26,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -105,7 +106,14 @@ fun DrawerMenu(
                                         title = context.getString(R.string.menu_newCandidate),
                                         icon = Icons.Filled.AccountCircle,
                                         contentDescription = context.getString(R.string.menu_newCandidate)
-                                    )) else listOf()).toMutableList()
+                                    ))
+                                else listOf(
+                                    MenuItem(
+                                        id = "listTest",
+                                        title = context.getString(R.string.menu_listTest),
+                                        icon = Icons.Filled.Build,
+                                        contentDescription = context.getString(R.string.menu_listTest)
+                                    ))).toMutableList()
                             items += listOf(
                                 MenuItem(
                                     id = "logout",
@@ -120,6 +128,9 @@ fun DrawerMenu(
                                 onItemClick = {
                                     if (it.id == "newCandidate") {
                                         navController.navigate("new_candidate")
+                                    }
+                                    else if (it.id == "listTest"){
+                                        navController.navigate("technical_tests")
                                     }
                                     else if (it.id == "logout") {
                                         val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)

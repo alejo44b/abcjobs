@@ -43,4 +43,9 @@
     <string name="splash_itspecialists_not_checked">No hay respuesta de especialistas</string>
     <string name="login_asset_email">El campo debe contener una dirección de correo electrónico válida</string>
     <string name="newCan_docs_button">Examinar</string>
+    <string name="tecnical_tests">Lista de pruebas técnicas</string>
+    <string name="menu_listTest">Pruebas técnicas</string>
+    <string name="tests_candidate">Candidato</string>
+    <string name="tests_fecha">Fecha</string>
+    <string name="tests_action">Acción</string>
 </resources>
