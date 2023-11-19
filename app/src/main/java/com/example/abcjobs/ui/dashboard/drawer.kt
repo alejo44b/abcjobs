@@ -111,7 +111,7 @@ fun DrawerMenu(
                                     )
                                 ) , onItemClick = {
                                     if (it.id == "newCandidate") {
-                                        navController.navigate("newCandidate")
+                                        navController.navigate("new_candidate")
                                     }
                                     else if (it.id == "logout") {
                                         val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)

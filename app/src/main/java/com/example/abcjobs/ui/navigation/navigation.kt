@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.ui.candidate.NewCandidate
+import com.example.abcjobs.ui.dashboard.Home
 import com.example.abcjobs.ui.login.Login
 import com.example.abcjobs.ui.login.Register
 import com.example.abcjobs.ui.login.SplashScreen
@@ -36,10 +37,13 @@ fun LoginNavigation(application: Application) {
 fun DashboardNavigation(navController: NavHostController, title: MutableState<String>, img: MutableState<Int>) {
     NavHost(
         navController = navController,
-        startDestination = DashboardScreens.NewCandidate.route
+        startDestination = DashboardScreens.Home.route
     ){
         composable(DashboardScreens.NewCandidate.route){
-            NewCandidate(title = title, img)
+            NewCandidate(navController,title, img)
+        }
+        composable(DashboardScreens.Home.route){
+            Home(title = title, img = img )
         }
     }
 }
