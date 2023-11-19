@@ -86,6 +86,7 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.16.0")
 
     implementation("com.android.volley:volley:1.2.1")
+    implementation ("com.google.code.gson:gson:2.9.0")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
 

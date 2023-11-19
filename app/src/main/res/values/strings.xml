@@ -46,4 +46,11 @@
     <string name="splash_itspecialists_not_checked">No response from specialists</string>
     <string name="login_asset_email">The field must contain a valid email address</string>
     <string name="newCan_docs_button">Search</string>
+    <string name="tecnical_tests">Technical Tests list</string>
+    <string name="menu_listTest">Technical Tests</string>
+    <string name="tests_candidate">Candidate</string>
+    <string name="tests_fecha">Date</string>
+    <string name="tests_action">Action</string>
+    <string name="splash_technicaltests_checked">Tests Checked</string>
+    <string name="splash_technicaltests_not_checked">No response from tests</string>
 </resources>
