@@ -25,4 +25,6 @@
     <string name="login_english">Inglés</string>
     <string name="login_spanish">Español</string>
     <string name="login_asset_alfanumerico">El campo debe contener texto alfanumérico</string>
+    <string name="menu_newCandidate">Nuevo Candidato</string>
+    <string name="menu_logout">Cerrar Sesión</string>
 </resources>

@@ -28,4 +28,6 @@
     <string name="login_english">English</string>
     <string name="login_spanish">Spanish</string>
     <string name="login_asset_alfanumerico">Field must contain alphanumeric text</string>
+    <string name="menu_newCandidate">New Candidate</string>
+    <string name="menu_logout">Logout</string>
 </resources>

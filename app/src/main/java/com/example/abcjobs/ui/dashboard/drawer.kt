@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,7 +20,13 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material.icons.filled.ExitToApp
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -32,12 +39,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
 import com.example.abcjobs.R
+import com.example.abcjobs.data.models.MenuItem
 import java.util.Locale
 
 @Composable
@@ -59,6 +68,8 @@ fun DrawerMenu(
         label = ""
     )
 
+    val context = LocalContext.current
+
     Popup(onDismissRequest = onDismissRequest) {
         Surface(
             modifier = Modifier.fillMaxSize(),
@@ -79,9 +90,24 @@ fun DrawerMenu(
                     ) {
                         Column() {
                             DrawerHeader()
-                            Text("Item 1")
-                            Text("Item 2")
-                            Text("Item 3")
+                            DrawerBody(
+                                items = listOf(
+                                    MenuItem(
+                                        id = "newCandidate",
+                                        title = context.getString(R.string.menu_newCandidate),
+                                        icon = Icons.Filled.AccountCircle,
+                                        contentDescription = context.getString(R.string.menu_newCandidate)
+                                    ),
+                                    MenuItem(
+                                        id = "logout",
+                                        title = context.getString(R.string.menu_logout),
+                                        icon = Icons.Filled.ExitToApp,
+                                        contentDescription = context.getString(R.string.menu_newCandidate)
+                                    )
+                                ) , onItemClick = {
+                                    println("Clicked on ${it.title}")
+                                    onDismissRequest()
+                                } )
                         }
                     }
 
@@ -161,6 +187,40 @@ fun DrawerHeader(){
 
 }
 
+@Composable
+fun DrawerBody(
+    items: List<MenuItem>,
+    modifier: Modifier = Modifier,
+    itemTextStyle: TextStyle = TextStyle(fontSize = 18.sp),
+    onItemClick: (MenuItem) -> Unit
+){
+    LazyColumn(modifier){
+        items(items){item ->
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onItemClick(item)
+                    }.background(MaterialTheme.colorScheme.surfaceVariant)
+            ){
+                Icon(
+                    imageVector = item.icon,
+                    contentDescription = item.contentDescription,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .size(25.dp),
+                )
+                Spacer(modifier = Modifier.width(5.dp))
+                Text(
+                    text = item.title,
+                    style = itemTextStyle,
+                    fontSize = 15.sp,
+                    modifier = Modifier.padding(16.dp),
+                )
+            }
+        }
+
+    }
+}
 @Preview(name = "Drawer")
 @Composable
 private fun PreviewDrawer() {
