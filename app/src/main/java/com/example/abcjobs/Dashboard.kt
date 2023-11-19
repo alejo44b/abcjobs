@@ -1,5 +1,6 @@
 package com.example.abcjobs
 
+import android.content.Context
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -58,22 +59,10 @@ class Dashboard : ComponentActivity() {
             }
         }
     }
-}
-
-
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ABCJobsTheme {
-        Greeting("Android")
+    override fun attachBaseContext(newBase: Context) {
+        val sharedPref = newBase.getSharedPreferences("MyPref", Context.MODE_PRIVATE)
+        val language = sharedPref.getString("language", "en")
+        val context = updateLocale(newBase, language!!)
+        super.attachBaseContext(context)
     }
 }

@@ -30,4 +30,7 @@
     <string name="login_asset_alfanumerico">Field must contain alphanumeric text</string>
     <string name="menu_newCandidate">New Candidate</string>
     <string name="menu_logout">Logout</string>
+    <string name="layout_maestria">Software Engineering Magister</string>
+    <string name="layout_grupo">MISO - Group 12</string>
+    <string name="layout_home">Home</string>
 </resources>

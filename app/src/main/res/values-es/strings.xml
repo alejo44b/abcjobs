@@ -27,4 +27,7 @@
     <string name="login_asset_alfanumerico">El campo debe contener texto alfanumérico</string>
     <string name="menu_newCandidate">Nuevo Candidato</string>
     <string name="menu_logout">Cerrar Sesión</string>
+    <string name="layout_maestria">Maestría en ingeniería de Software</string>
+    <string name="layout_grupo">MISO - Grupo 12</string>
+    <string name="layout_home">Inicio</string>
 </resources>
