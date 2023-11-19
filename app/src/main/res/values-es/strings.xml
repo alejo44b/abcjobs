@@ -48,4 +48,6 @@
     <string name="tests_candidate">Candidato</string>
     <string name="tests_fecha">Fecha</string>
     <string name="tests_action">Acción</string>
+    <string name="splash_technicaltests_checked">Pruebas comprobado</string>
+    <string name="splash_technicaltests_not_checked">No hay respuesta de pruebas</string>
 </resources>

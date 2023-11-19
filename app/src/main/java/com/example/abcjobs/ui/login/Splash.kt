@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.Security
+import com.example.abcjobs.services.network.TechnicalTestAdapter
 import com.example.abcjobs.ui.navigation.LoginScreens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -43,18 +44,24 @@ fun SplashScreen(navController: NavController, application: Application){
 
     LaunchedEffect(Unit){
         val sec = Security(application)
-        val itspecialist = ItSpecialistsAdapter(application)
+        val specialist = ItSpecialistsAdapter(application)
+        val technical = TechnicalTestAdapter(application)
 
         textoCarga = context.getString(R.string.splash_checking_servers)
         withContext(Dispatchers.IO) {
             try {
                 textoCarga = if (sec.pong()) context.getString(R.string.splash_users_checked) else context.getString(R.string.splash_users_not_checked)
-                for (i in 0..50) {
+                for (i in 0..33) {
                     progress = i / 100f
                     delay(10)
                 }
-                textoCarga = if (itspecialist.pong()) context.getString(R.string.splash_itspecialists_checked) else context.getString(R.string.splash_itspecialists_not_checked)
-                for (i in 50..100) {
+                textoCarga = if (specialist.pong()) context.getString(R.string.splash_itspecialists_checked) else context.getString(R.string.splash_itspecialists_not_checked)
+                for (i in 33..66) {
+                    progress = i / 100f
+                    delay(10)
+                }
+                textoCarga = if (technical.pong()) context.getString(R.string.splash_technicaltests_checked) else context.getString(R.string.splash_technicaltests_not_checked)
+                for (i in 66..100) {
                     progress = i / 100f
                     delay(10)
                 }

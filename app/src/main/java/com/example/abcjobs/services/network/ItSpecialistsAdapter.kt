@@ -12,15 +12,12 @@ import kotlin.coroutines.suspendCoroutine
 
 import org.json.JSONObject
 import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
-
-import com.example.abcjobs.data.models.*
 import kotlin.coroutines.resumeWithException
 
 class ItSpecialistsAdapter constructor(context: Context) {
     companion object{
         const val BASE_URL = "http://10.0.2.2:3002"
-        var instance: ItSpecialistsAdapter? = null
+        private var instance: ItSpecialistsAdapter? = null
         fun getInstance(context: Context) =
             instance ?: synchronized(this) {
                 instance ?: ItSpecialistsAdapter(context).also {
