@@ -30,4 +30,12 @@
     <string name="layout_maestria">Maestría en ingeniería de Software</string>
     <string name="layout_grupo">MISO - Grupo 12</string>
     <string name="layout_home">Inicio</string>
+    <string name="newCan_name">Nombre</string>
+    <string name="newCan_Nacionalidad">Nacionalidad</string>
+    <string name="newCan_profesion">Profesión</string>
+    <string name="newCan_Specialization">Especialización</string>
+    <string name="newCan_Resumen">Resumen del perfil</string>
+    <string name="newCan_docs">Documentos</string>
+    <string name="newCan_exam">Examinar</string>
+    <string name="newCan_button">Registrar Candidato</string>
 </resources>

@@ -35,17 +35,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.R
+import com.example.abcjobs.ui.navigation.DashboardNavigation
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Layout() {
     val (drawerOpen, setDrawerOpen) = remember { mutableStateOf(false) }
+    val navController = rememberNavController()
     val context = LocalContext.current
 
+    val title = remember { mutableStateOf(context.getString(R.string.layout_home)) }
+    val img = remember { mutableStateOf(R.drawable.home) }
+    
     if (drawerOpen) {
-        DrawerMenu(onDismissRequest = { setDrawerOpen(false) }, drawerOpen = true)
+        DrawerMenu(onDismissRequest = { setDrawerOpen(false) }, drawerOpen = true, navController = navController)
     }
 
     Scaffold(
@@ -89,13 +95,13 @@ fun Layout() {
                         verticalAlignment = Alignment.CenterVertically,
                     ){
                         Image(
-                            painter = painterResource(id = R.drawable.home),
+                            painter = painterResource(id = img.value),
                             contentDescription = "Home",
                             modifier = Modifier
                                 .size(30.dp)
                         )
                         Text(
-                            text = context.getString(R.string.layout_home),
+                            text = title.value,
                             fontSize = 20.sp,
                             modifier = Modifier.padding(10.dp)
                         )
@@ -105,10 +111,7 @@ fun Layout() {
                         thickness = 1.dp,
                         modifier = Modifier.padding(10.dp)
                     )
-                    Column {
-                        Text(text = "Hola")
-                        Text(text = "Hola")
-                    }
+                    DashboardNavigation(navController, title, img)
                 }
 
                 Box(

@@ -37,6 +37,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.ui.navigation.LoginScreens
+import com.google.accompanist.insets.imePadding
 
 @Composable
 fun Register(navController: NavController) {
@@ -56,7 +57,8 @@ fun RegisterBody(navController: NavController) {
         modifier = Modifier
             .fillMaxHeight(1f)
             .verticalScroll(scrollState)
-            .padding(horizontal = 0.dp, vertical = 30.dp),
+            .padding(horizontal = 0.dp, vertical = 30.dp)
+            .imePadding(),
         verticalArrangement = Arrangement.Center
     ){
         val context = LocalContext.current

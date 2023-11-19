@@ -33,4 +33,12 @@
     <string name="layout_maestria">Software Engineering Magister</string>
     <string name="layout_grupo">MISO - Group 12</string>
     <string name="layout_home">Home</string>
+    <string name="newCan_name">Name</string>
+    <string name="newCan_Nacionalidad">Nationality</string>
+    <string name="newCan_profesion">Profession</string>
+    <string name="newCan_Specialization">Specialization</string>
+    <string name="newCan_Resumen">Profile Summary</string>
+    <string name="newCan_docs">Documents</string>
+    <string name="newCan_exam">Search</string>
+    <string name="newCan_button">Register Candidate</string>
 </resources>

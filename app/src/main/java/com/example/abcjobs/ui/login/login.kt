@@ -44,6 +44,7 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.Dashboard
 import com.example.abcjobs.services.network.Security
+import com.google.accompanist.insets.imePadding
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -65,7 +66,8 @@ fun LoginBody(navController: NavController, application: Application) {
 
     Column (
         modifier = Modifier
-            .fillMaxHeight(1f),
+            .fillMaxHeight(1f)
+            .imePadding(),
         verticalArrangement = Arrangement.Center
     ){
         var username = remember { mutableStateOf("") }

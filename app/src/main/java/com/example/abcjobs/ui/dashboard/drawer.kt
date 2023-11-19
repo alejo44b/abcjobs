@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import androidx.navigation.NavController
 import com.example.abcjobs.Dashboard
 import com.example.abcjobs.MainActivity
 import com.example.abcjobs.R
@@ -56,6 +57,7 @@ import java.util.Locale
 fun DrawerMenu(
     onDismissRequest: () -> Unit,
     drawerOpen: Boolean,
+    navController: NavController
 ) {
     val animationDuration = 2000
 
@@ -108,7 +110,10 @@ fun DrawerMenu(
                                         contentDescription = context.getString(R.string.menu_newCandidate)
                                     )
                                 ) , onItemClick = {
-                                    if (it.id == "logout") {
+                                    if (it.id == "newCandidate") {
+                                        navController.navigate("newCandidate")
+                                    }
+                                    else if (it.id == "logout") {
                                         val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
                                         with (sharedPref.edit()) {
                                             putString("token", null)
@@ -243,5 +248,5 @@ fun DrawerBody(
 @Preview(name = "Drawer")
 @Composable
 private fun PreviewDrawer() {
-    DrawerMenu(onDismissRequest = { }, true)
+    DrawerMenu(onDismissRequest = { }, true, NavController(LocalContext.current))
 }

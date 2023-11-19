@@ -82,6 +82,9 @@ dependencies {
     //implementation("com.squareup.okhttp3:okhttp")
     //implementation("com.squareup.okhttp3:logging-interceptor")
 
+    implementation ("com.google.accompanist:accompanist-insets:0.16.0")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.16.0")
+
     implementation("com.android.volley:volley:1.2.1")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")

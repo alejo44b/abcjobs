@@ -2,9 +2,13 @@ package com.example.abcjobs.ui.navigation
 
 import android.app.Application
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.abcjobs.ui.candidate.NewCandidate
 import com.example.abcjobs.ui.login.Login
 import com.example.abcjobs.ui.login.Register
 import com.example.abcjobs.ui.login.SplashScreen
@@ -24,6 +28,18 @@ fun LoginNavigation(application: Application) {
         }
         composable(LoginScreens.Register.route){
             Register(navController)
+        }
+    }
+}
+
+@Composable
+fun DashboardNavigation(navController: NavHostController, title: MutableState<String>, img: MutableState<Int>) {
+    NavHost(
+        navController = navController,
+        startDestination = DashboardScreens.NewCandidate.route
+    ){
+        composable(DashboardScreens.NewCandidate.route){
+            NewCandidate(title = title, img)
         }
     }
 }
