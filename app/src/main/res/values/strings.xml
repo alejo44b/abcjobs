@@ -41,4 +41,7 @@
     <string name="newCan_docs">Documents</string>
     <string name="newCan_exam">Search</string>
     <string name="newCan_button">Register Candidate</string>
+    <string name="splash_users_not_checked">No response from users</string>
+    <string name="splash_itspecialists_checked">Specialists checked</string>
+    <string name="splash_itspecialists_not_checked">No response from specialists</string>
 </resources>

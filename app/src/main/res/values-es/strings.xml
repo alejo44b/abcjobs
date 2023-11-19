@@ -38,4 +38,7 @@
     <string name="newCan_docs">Documentos</string>
     <string name="newCan_exam">Examinar</string>
     <string name="newCan_button">Registrar Candidato</string>
+    <string name="splash_users_not_checked">No hay respuesta de usuarios</string>
+    <string name="splash_itspecialists_checked">Especialistas comprobado</string>
+    <string name="splash_itspecialists_not_checked">No hay respuesta de especialistas</string>
 </resources>

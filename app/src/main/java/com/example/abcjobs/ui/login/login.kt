@@ -70,8 +70,8 @@ fun LoginBody(navController: NavController, application: Application) {
             .imePadding(),
         verticalArrangement = Arrangement.Center
     ){
-        var username = remember { mutableStateOf("") }
-        var password = remember { mutableStateOf("") }
+        val username = remember { mutableStateOf("") }
+        val password = remember { mutableStateOf("") }
 
         var error by rememberSaveable { mutableStateOf(false) }
         var clicked by rememberSaveable { mutableStateOf(false) }
@@ -81,7 +81,7 @@ fun LoginBody(navController: NavController, application: Application) {
         var selectedItem by remember { mutableStateOf(context.getString(R.string.login_select_lang)) }
         val items = listOf(context.getString(R.string.login_english), context.getString(R.string.login_spanish))
 
-        var valid = remember { mutableStateOf(false) }
+        val valid = remember { mutableStateOf(false) }
 
         NormalText(context.getString(R.string.greeting))
         TitleText(context.getString(R.string.login_welcome))
