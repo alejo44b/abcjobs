@@ -3,11 +3,13 @@ package com.example.abcjobs.ui.navigation
 import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.abcjobs.R
 import com.example.abcjobs.ui.candidate.NewCandidate
 import com.example.abcjobs.ui.dashboard.Home
 import com.example.abcjobs.ui.login.Login
@@ -43,6 +45,9 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
             NewCandidate(navController,title, img)
         }
         composable(DashboardScreens.Home.route){
+            val context = LocalContext.current
+            title.value = context.getString(R.string.layout_home)
+            img.value = R.drawable.home
             Home(title = title, img = img )
         }
     }

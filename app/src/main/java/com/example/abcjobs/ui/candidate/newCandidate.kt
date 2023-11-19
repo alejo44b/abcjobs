@@ -83,6 +83,14 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
     val scrollState = rememberScrollState()
     var showDialog by remember { mutableStateOf(false) }
 
+    LaunchedEffect(nombre.value, email.value, nacionalidad.value, profesion.value, especialidad.value, resumen.value) {
+        valid.value =
+            if (nombre.value.isEmpty() || email.value.isEmpty()
+                || nacionalidad.value == context.getString(R.string.newCan_Nacionalidad)
+                || profesion.value.isEmpty() || especialidad.value == context.getString(R.string.newCan_Specialization)
+                || resumen.value.isEmpty()) false else valid.value
+    }
+
     if (clicked) {
         val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
         val userId = sharedPref.getString("id", null)?.toInt()
@@ -116,33 +124,74 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
         .verticalScroll(scrollState)
         .imePadding()
     ){
-
-        Campo(nombre, context.getString(R.string.newCan_name), R.drawable.user, valid = valid)
-        Campo(email, context.getString(R.string.email), R.drawable.mail, valid = valid)
+        Campo(nombre, context.getString(R.string.newCan_name), R.drawable.user, valid = valid, validators = arrayOf("Alphanumeric_es", "Required"))
+        Campo(email, context.getString(R.string.email), R.drawable.mail, valid = valid, validators = arrayOf("Email", "Required"))
         Select(listOf(
             "Colombia",
-            "Estados Unidos",
-            "España",
-            "Argentina"
+            "Canada",
+            "EE UU",
         ), nacionalidad, R.drawable.nacionalidad)
-        Campo(profesion, context.getString(R.string.newCan_profesion), R.drawable.trabajo, valid = valid)
+        Campo(profesion, context.getString(R.string.newCan_profesion), R.drawable.trabajo, valid = valid, validators = arrayOf("Alphanumeric_es", "Required"))
         Select(listOf(
-            "Ingeniería de sistemas",
-            "Ingeniería de software",
-            "Ingeniería de telecomunicaciones",
+            ".NET Junior Architect",
+            ".NET Semi-Senior Architect",
+            ".NET Senior Architect",
+            ".NET Junior Developer",
+            ".NET Semi-Senior Developer",
+            ".NET Senior Developer",
+            "Java Junior Architect",
+            "Java Semi-Senior Architect",
+            "Java Senior Architect",
+            "Java Junior Developer",
+            "Java Semi-Senior Developer",
+            "Java Senior Developer",
         ), especialidad, R.drawable.trabajo)
-        CampoMultilinea(resumen, context.getString(R.string.newCan_Resumen), valid = valid)
-        /*Row(){
-            Campo(documentos, context.getString(R.string.newCan_docs), R.drawable.docs)
-            Boton(
-                context.getString(R.string.newCan_button),
-                onClick = {
-                    println("Siuuuu")
-                }
-            )
-        }*/
+        CampoMultilinea(resumen, context.getString(R.string.newCan_Resumen), valid = valid, validators = arrayOf("Alphanumeric_es", "Required"))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.5f)
+                    .height(50.dp)
+                    .clip(RoundedCornerShape(13.dp))
+                    .background(color = MaterialTheme.colorScheme.surface)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.surfaceVariant,
+                        shape = RoundedCornerShape(13.dp)
+                    ),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.docs),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(10.dp)
+                )
+                Text(
+                    text = context.getString(R.string.newCan_docs),
+                    modifier = Modifier.padding(10.dp),
+                    fontSize = 15.sp
+                )
+            }
+            Button(
+                modifier = Modifier.padding(10.dp),
+                onClick ={
+                    showDialog = false
+                    navController.navigate("home")
+                }) {
+                Text(context.getString(R.string.newCan_docs_button))
+            }
+        }
         Boton(
             context.getString(R.string.newCan_button),
+            valid = valid,
             onClick = {
                 clicked = true
             })

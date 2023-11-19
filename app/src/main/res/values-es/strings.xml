@@ -41,4 +41,6 @@
     <string name="splash_users_not_checked">No hay respuesta de usuarios</string>
     <string name="splash_itspecialists_checked">Especialistas comprobado</string>
     <string name="splash_itspecialists_not_checked">No hay respuesta de especialistas</string>
+    <string name="login_asset_email">El campo debe contener una dirección de correo electrónico válida</string>
+    <string name="newCan_docs_button">Examinar</string>
 </resources>

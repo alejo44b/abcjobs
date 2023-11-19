@@ -83,6 +83,10 @@ fun LoginBody(navController: NavController, application: Application) {
 
         val valid = remember { mutableStateOf(false) }
 
+        LaunchedEffect(username.value, password.value) {
+            valid.value = if (username.value.isEmpty() || password.value.isEmpty()) false else valid.value
+        }
+
         NormalText(context.getString(R.string.greeting))
         TitleText(context.getString(R.string.login_welcome))
         LoginCampo(username, context.getString(R.string.username), R.drawable.user, validators = arrayOf("Alphanumeric", "Required"), valid = valid)

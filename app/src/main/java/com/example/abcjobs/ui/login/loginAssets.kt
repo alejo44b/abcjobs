@@ -124,7 +124,7 @@ fun LoginCampo(text: MutableState<String>, labelValue:String, painter: Int, vali
                 if (it.isFocused) {
                     clicked = true
                 }
-                if (!it.isFocused && clicked) {
+                if (clicked) {
                     errorMessage = if(validators.contains("Alphanumeric") && !pattern.matcher(text.value).matches()) context.getString(R.string.login_asset_alfanumerico) else null
                     errorMessage = if(validators.contains("Required") && text.value.isEmpty()) context.getString(R.string.login_asset_required) else errorMessage
                     valid.value = errorMessage == null

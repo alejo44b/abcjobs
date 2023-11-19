@@ -44,4 +44,6 @@
     <string name="splash_users_not_checked">No response from users</string>
     <string name="splash_itspecialists_checked">Specialists checked</string>
     <string name="splash_itspecialists_not_checked">No response from specialists</string>
+    <string name="login_asset_email">The field must contain a valid email address</string>
+    <string name="newCan_docs_button">Search</string>
 </resources>
