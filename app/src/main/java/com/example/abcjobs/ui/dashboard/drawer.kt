@@ -1,5 +1,6 @@
 package com.example.abcjobs.ui.dashboard
 
+import android.content.Intent
 import androidx.activity.ComponentActivity
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -45,6 +46,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Popup
+import com.example.abcjobs.Dashboard
+import com.example.abcjobs.MainActivity
 import com.example.abcjobs.R
 import com.example.abcjobs.data.models.MenuItem
 import java.util.Locale
@@ -105,7 +108,23 @@ fun DrawerMenu(
                                         contentDescription = context.getString(R.string.menu_newCandidate)
                                     )
                                 ) , onItemClick = {
-                                    println("Clicked on ${it.title}")
+                                    if (it.id == "logout") {
+                                        val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
+                                        with (sharedPref.edit()) {
+                                            putString("token", null)
+                                            putString("username", null)
+                                            putString("role", null)
+                                            putString("email", null)
+                                            putString("companyId", null)
+                                            putString("createdAt", null)
+                                            putString("expiredAt", null)
+                                            putString("id", null)
+                                            commit()
+                                        }
+
+                                        val intent = Intent(context, MainActivity::class.java)
+                                        context.startActivity(intent)
+                                    }
                                     onDismissRequest()
                                 } )
                         }
