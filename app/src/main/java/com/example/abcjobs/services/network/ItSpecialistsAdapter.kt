@@ -16,7 +16,8 @@ import kotlin.coroutines.resumeWithException
 
 class ItSpecialistsAdapter constructor(context: Context) {
     companion object{
-        const val BASE_URL = "http://10.0.2.2:3002"
+        //const val BASE_URL = "http://10.0.2.2:3002"
+        const val BASE_URL = "http://lb-itspecialist-1174227152.us-east-1.elb.amazonaws.com"
         private var instance: ItSpecialistsAdapter? = null
         fun getInstance(context: Context) =
             instance ?: synchronized(this) {
