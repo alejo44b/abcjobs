@@ -14,12 +14,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 import com.example.abcjobs.data.models.*
+import kotlin.coroutines.resumeWithException
 
 class Security constructor(context: Context) {
     companion object{
-        const val BASE_URL = "http://10.0.2.2:3000"
-        //const val BASE_URL = "https://api.publicapis.org/random"
-        //const val BASE_URL = "http://192.168.0.7:3000"
+        //const val BASE_URL = "http://10.0.2.2:3000"
+        const val BASE_URL = "http://lb-secuirity-1765402036.us-east-1.elb.amazonaws.com"
         var instance: Security? = null
         fun getInstance(context: Context) =
             instance ?: synchronized(this) {
@@ -38,7 +38,7 @@ class Security constructor(context: Context) {
             }))
     }
 
-    suspend fun auth(jsonUser:JSONObject): Token = suspendCoroutine{ cont->
+    suspend fun auth(jsonUser:JSONObject, context: Context):Boolean = suspendCoroutine{ cont->
         requestQueue.add(postRequest("/users/auth",
             jsonUser,
             { response ->
@@ -52,8 +52,21 @@ class Security constructor(context: Context) {
                     token = response.getString("token"),
                     username = response.getString("username")
                 )
-               cont.resume(token)
+                val sharedPref = context.getSharedPreferences("auth", Context.MODE_PRIVATE)
+                with (sharedPref.edit()) {
+                    putString("token", token.token)
+                    putString("username", token.username)
+                    putString("role", token.role)
+                    putString("email", token.email)
+                    putString("companyId", token.companyId)
+                    putString("id", token.id.toString())
+                    putString("createdAt", token.createdAt)
+                    putString("expiredAt", token.expiredAt)
+                    apply()
+                    cont.resume(true)
+                }
             }, {
+                cont.resumeWithException(it)
                 Log.e("SecurityLogs", "Error: ${it.message}")
             }))
     }

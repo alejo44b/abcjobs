@@ -24,10 +24,13 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.Security
+import com.example.abcjobs.services.network.TechnicalTestAdapter
 import com.example.abcjobs.ui.navigation.LoginScreens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -35,25 +38,32 @@ import kotlinx.coroutines.withContext
 
 @Composable
 fun SplashScreen(navController: NavController, application: Application){
+    val context = LocalContext.current
     var progress by remember { mutableFloatStateOf(0f) }
-    var textoCarga by remember { mutableStateOf ("Loading...") }
+    var textoCarga by remember { mutableStateOf (context.getString(R.string.loading)) }
 
     LaunchedEffect(Unit){
         val sec = Security(application)
+        val specialist = ItSpecialistsAdapter(application)
+        val technical = TechnicalTestAdapter(application)
 
-        textoCarga = "Checking connection with Servers..."
+        textoCarga = context.getString(R.string.splash_checking_servers)
         withContext(Dispatchers.IO) {
             try {
-                if (sec.pong()) {
-                    textoCarga = "Users checked"
-                    for (i in 0..100) {
-                        progress = i / 100f
-                        delay(10)
-                    }
+                textoCarga = if (sec.pong()) context.getString(R.string.splash_users_checked) else context.getString(R.string.splash_users_not_checked)
+                for (i in 0..33) {
+                    progress = i / 100f
+                    delay(10)
                 }
-                else
-                {
-                    progress = 0f
+                textoCarga = if (specialist.pong()) context.getString(R.string.splash_itspecialists_checked) else context.getString(R.string.splash_itspecialists_not_checked)
+                for (i in 33..66) {
+                    progress = i / 100f
+                    delay(10)
+                }
+                textoCarga = if (technical.pong()) context.getString(R.string.splash_technicaltests_checked) else context.getString(R.string.splash_technicaltests_not_checked)
+                for (i in 66..100) {
+                    progress = i / 100f
+                    delay(10)
                 }
             }catch (e: Exception){
                 Log.e("SplashScreen", "Error: ${e.message}")

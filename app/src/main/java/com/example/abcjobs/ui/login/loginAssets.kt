@@ -36,8 +36,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.core.text.isDigitsOnly
+import java.util.regex.Pattern
 
 @Composable
 fun LoginHeader() {
@@ -95,8 +99,13 @@ fun TitleText(text: String) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginCampo(text: MutableState<String>, labelValue:String, painter: Int, validators: Array<String> = arrayOf("Required") , password: Boolean = false){
+fun LoginCampo(text: MutableState<String>, labelValue:String, painter: Int, validators: Array<String> = arrayOf("Required"), password: Boolean = false, valid: MutableState<Boolean> = mutableStateOf(true)) {
+    val context = LocalContext.current
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    var clicked by rememberSaveable { mutableStateOf(false) }
+
+    val pattern = Pattern.compile("^[a-zA-Z0-9]*$")
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -107,13 +116,20 @@ fun LoginCampo(text: MutableState<String>, labelValue:String, painter: Int, vali
             value = text.value,
             onValueChange = {
                 text.value = it
-                for (validator in validators) {
-                    if (validator == "Required" && it.isEmpty()) {
-                        errorMessage = "Field is required"
-                    }else{
-                        errorMessage = null
-                    }
-                }},
+                errorMessage = if(validators.contains("Alphanumeric") && !pattern.matcher(it).matches()) context.getString(R.string.login_asset_alfanumerico) else null
+                errorMessage = if(validators.contains("Required") && it.isEmpty()) context.getString(R.string.login_asset_required) else errorMessage
+                valid.value = errorMessage == null
+            },
+            modifier = Modifier.onFocusChanged {
+                if (it.isFocused) {
+                    clicked = true
+                }
+                if (clicked) {
+                    errorMessage = if(validators.contains("Alphanumeric") && !pattern.matcher(text.value).matches()) context.getString(R.string.login_asset_alfanumerico) else null
+                    errorMessage = if(validators.contains("Required") && text.value.isEmpty()) context.getString(R.string.login_asset_required) else errorMessage
+                    valid.value = errorMessage == null
+                }
+            },
             label = { Text(labelValue) },
             isError = errorMessage != null,
             leadingIcon = { Image(
@@ -146,7 +162,7 @@ fun LoginCampo(text: MutableState<String>, labelValue:String, painter: Int, vali
     }
 }
 @Composable
-fun ButtonLogin(label: String, onClick: () -> Unit) {
+fun ButtonLogin(label: String, onClick: () -> Unit, valid: MutableState<Boolean> = mutableStateOf(true)) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -155,6 +171,7 @@ fun ButtonLogin(label: String, onClick: () -> Unit) {
     ) {
         Button(
             onClick = onClick,
+            enabled = valid.value,
             modifier = Modifier
                 .fillMaxWidth()
                 .size(50.dp),
