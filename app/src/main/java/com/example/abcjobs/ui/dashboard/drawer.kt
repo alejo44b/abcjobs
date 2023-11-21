@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.ExitToApp
@@ -106,14 +107,22 @@ fun DrawerMenu(
                                         title = context.getString(R.string.menu_newCandidate),
                                         icon = Icons.Filled.AccountCircle,
                                         contentDescription = context.getString(R.string.menu_newCandidate)
-                                    ))
+                                    )
+                                )
                                 else listOf(
                                     MenuItem(
                                         id = "listTest",
                                         title = context.getString(R.string.menu_listTest),
                                         icon = Icons.Filled.Build,
                                         contentDescription = context.getString(R.string.menu_listTest)
-                                    ))).toMutableList()
+                                    ),
+                                    MenuItem(
+                                        id = "interviews",
+                                        title = context.getString(R.string.layout_interviews),
+                                        icon = Icons.Filled.AccountBox,
+                                        contentDescription = context.getString(R.string.layout_interviews)
+                                    )
+                                )).toMutableList()
                             items += listOf(
                                 MenuItem(
                                     id = "logout",
@@ -128,6 +137,9 @@ fun DrawerMenu(
                                 onItemClick = {
                                     if (it.id == "newCandidate") {
                                         navController.navigate("new_candidate")
+                                    }
+                                    else if (it.id == "interviews") {
+                                        navController.navigate("interviews")
                                     }
                                     else if (it.id == "listTest"){
                                         navController.navigate("technical_tests")

@@ -62,4 +62,7 @@
     <string name="aceptar">Accept</string>
     <string name="login_asset_numeric">The field should only contain numbers</string>
     <string name="save_test_exito">Result saved!</string>
+    <string name="splash_interviews_checked">Interviews Checked</string>
+    <string name="splash_interviews_not_checked">No response from interviews</string>
+    <string name="layout_interviews">Interviews</string>
 </resources>
