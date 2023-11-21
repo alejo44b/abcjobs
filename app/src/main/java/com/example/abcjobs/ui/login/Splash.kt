@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.abcjobs.services.network.InterviewAdapter
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.Security
 import com.example.abcjobs.services.network.TechnicalTestAdapter
@@ -46,22 +47,28 @@ fun SplashScreen(navController: NavController, application: Application){
         val sec = Security(application)
         val specialist = ItSpecialistsAdapter(application)
         val technical = TechnicalTestAdapter(application)
+        val interview = InterviewAdapter(application)
 
         textoCarga = context.getString(R.string.splash_checking_servers)
         withContext(Dispatchers.IO) {
             try {
                 textoCarga = if (sec.pong()) context.getString(R.string.splash_users_checked) else context.getString(R.string.splash_users_not_checked)
-                for (i in 0..33) {
+                for (i in 0..25) {
                     progress = i / 100f
                     delay(10)
                 }
                 textoCarga = if (specialist.pong()) context.getString(R.string.splash_itspecialists_checked) else context.getString(R.string.splash_itspecialists_not_checked)
-                for (i in 33..66) {
+                for (i in 25..50) {
                     progress = i / 100f
                     delay(10)
                 }
                 textoCarga = if (technical.pong()) context.getString(R.string.splash_technicaltests_checked) else context.getString(R.string.splash_technicaltests_not_checked)
-                for (i in 66..100) {
+                for (i in 50..75) {
+                    progress = i / 100f
+                    delay(10)
+                }
+                textoCarga = if (interview.pong()) context.getString(R.string.splash_interviews_checked) else context.getString(R.string.splash_interviews_not_checked)
+                for (i in 75..100) {
                     progress = i / 100f
                     delay(10)
                 }

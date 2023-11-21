@@ -12,6 +12,8 @@ import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.R
 import com.example.abcjobs.ui.candidate.NewCandidate
 import com.example.abcjobs.ui.dashboard.Home
+import com.example.abcjobs.ui.interview.InterviewResult
+import com.example.abcjobs.ui.interview.Interviews
 import com.example.abcjobs.ui.login.Login
 import com.example.abcjobs.ui.login.Register
 import com.example.abcjobs.ui.login.SplashScreen
@@ -50,7 +52,7 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
             val context = LocalContext.current
             title.value = context.getString(R.string.tecnical_tests)
             img.value = R.drawable.test
-            TechnicalTests( navController, title, img)
+            TechnicalTests(navController, title, img)
         }
         composable(DashboardScreens.Home.route){
             val context = LocalContext.current
@@ -65,6 +67,23 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
             val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
             if (id != null) {
                 SaveTechnicalTest(navController, title, img, id)
+            } else {
+                // Maneja el caso en que id es null
+            }
+        }
+        composable(DashboardScreens.Interviews.route){
+            val context = LocalContext.current
+            title.value = context.getString(R.string.layout_interviews)
+            img.value = R.drawable.test
+            Interviews(navController, title, img)
+        }
+        composable(DashboardScreens.SaveInterview.route) { backStackEntry ->
+            val context = LocalContext.current
+            title.value = context.getString(R.string.layout_interview)
+            img.value = R.drawable.test
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            if (id != null) {
+                InterviewResult(navController = navController, title = title, img = img, id = id)
             } else {
                 // Maneja el caso en que id es null
             }
