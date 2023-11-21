@@ -127,7 +127,7 @@ fun Interviews(navController: NavController, title: MutableState<String>, img: M
                     if(result.value.id != 0) {
                         IconButton(
                             onClick = {
-                                navController.navigate("save_interview/${item.id}")
+                                navController.navigate("save_interview/${item.id}/${item.itSpecialistName}")
                             }
                         ) {
                             Icon(

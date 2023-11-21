@@ -42,7 +42,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.abcjobs.R
+import com.example.abcjobs.data.models.Interview
+import com.example.abcjobs.data.models.InterviewResult
 import com.example.abcjobs.data.models.TechnicalTest
+import com.example.abcjobs.services.network.InterviewAdapter
 import com.example.abcjobs.services.network.TechnicalTestAdapter
 import com.example.abcjobs.ui.dashboard.Boton
 import com.example.abcjobs.ui.dashboard.Campo
@@ -59,14 +62,13 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 @Composable
-fun InterviewResult(navController: NavController, title: MutableState<String>, img: MutableState<Int>, id: Int) {
+fun InterviewResult(navController: NavController, title: MutableState<String>, img: MutableState<Int>, id: Int, candidate: String) {
     val context = LocalContext.current
     title.value = context.getString(R.string.layout_interview)
     img.value = R.drawable.test
 
     val date = remember { mutableStateOf(LocalDate.now()) }
     val time = remember { mutableStateOf(LocalTime.now().withSecond(0)) }
-
     val resultado = remember { mutableStateOf("") }
     val datetime = remember { mutableStateOf("${date.value}T${time.value.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}") }
 
@@ -79,18 +81,15 @@ fun InterviewResult(navController: NavController, title: MutableState<String>, i
     val dialogState = rememberMaterialDialogState()
     val timeState = rememberMaterialDialogState()
 
-    val test = remember { mutableStateOf(
-        TechnicalTest(
-        companyId = 0,
-        companyName = "",
-        date = "",
-        id = 0,
-        itSpecialistId = 0,
-        itSpecialistName = "",
-        projectId = 0,
-        projectName = ""
-    )
-    ) }
+    val interviewResult = remember{ mutableStateOf(
+        InterviewResult(
+            comments = "",
+            date = "",
+            id = 0,
+            interviewId = 0,
+            result = 0
+        )
+    )}
 
     val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
     val token = sharedPref.getString("token", null)
@@ -104,31 +103,8 @@ fun InterviewResult(navController: NavController, title: MutableState<String>, i
         valid.value = resultado.value.isNotEmpty()
     }
 
-    /*LaunchedEffect(true){
-        test.value = TechnicalTestAdapter.getInstance(context).getTechnicalTest(id,token!!)
-    }*/
-
-    if (clicked) {
-        val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
-        val token = sharedPref.getString("token", null)
-        val json = JSONObject()
-            .put("technicalTestId", id)
-            .put("result", resultado.value.toInt())
-            .put("date", datetime.value)
-        valid.value = false
-        LaunchedEffect(Unit){
-            withContext(Dispatchers.IO) {
-                try {
-                    if (TechnicalTestAdapter.getInstance(context).addResult(json, token!!)) {
-                        showDialog = true
-                    }
-                }catch (e: Exception){
-                    Log.e("TechnicalTestLogs", "Error: ${e.message}")
-                }
-            }
-        }
-        valid.value = true
-        clicked = false
+    LaunchedEffect(true){
+        interviewResult.value = InterviewAdapter.getInstance(context).getInterviewResult(id, token!!)
     }
 
     Column (modifier = Modifier
@@ -153,14 +129,10 @@ fun InterviewResult(navController: NavController, title: MutableState<String>, i
                     .size(40.dp)
                     .padding(start = 15.dp)
             )
-            Text(text = test.value.itSpecialistName, modifier = Modifier.padding(10.dp))
+            Text(text = candidate, modifier = Modifier.padding(10.dp))
         }
 
-        Text(text = context.getString(R.string.save_test_resultado), modifier = Modifier.padding(10.dp))
-        Campo(resultado, context.getString(R.string.save_test_resultado), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required"))
-
-        Text(text = context.getString(R.string.save_test_date), modifier = Modifier.padding(10.dp))
-
+        Text(text = context.getString(R.string.interview_resultado), modifier = Modifier.padding(10.dp))
         Row (
             modifier = Modifier
                 .fillMaxWidth()
@@ -168,123 +140,59 @@ fun InterviewResult(navController: NavController, title: MutableState<String>, i
                 .clip(RoundedCornerShape(13.dp))
                 .background(color = MaterialTheme.colorScheme.surfaceVariant),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ){
-            Text(text = datetime.value, modifier = Modifier.padding(10.dp))
-            Row {
-                IconButton(
-                    onClick = {
-                        dialogState.show()
-                    }
-                ){
-                    Icon(
-                        imageVector = Icons.Filled.DateRange,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(20.dp)
-                    )
-                }
-
-                IconButton(
-                    onClick = {
-                        timeState.show()
-                    }
-                ){
-                    Icon(
-                        painter = painterResource(id = R.drawable.time),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier
-                            .size(20.dp)
-                    )
-                }
-            }
-        }
-
-
-        MaterialDialog(
-            dialogState = dialogState,
-            buttons = {
-                positiveButton("Ok")
-                negativeButton("Cancel")
-            },
         ) {
-            datepicker(initialDate = date.value, onDateChange = { date.value = it })
+            Image(
+                painter = painterResource(id = R.drawable.user),
+                contentDescription = "Username Icon",
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 15.dp)
+            )
+            Text(text = interviewResult.value.result.toString(), modifier = Modifier.padding(10.dp))
         }
-
-        MaterialDialog(
-            dialogState = timeState,
-            buttons = {
-                positiveButton("Ok")
-                negativeButton("Cancel")
-            }
-        ) {
-            timepicker(initialTime = time.value, onTimeChange = { time.value = it })
-        }
-
-        Divider(
+        Text(text = context.getString(R.string.interview_fecha), modifier = Modifier.padding(10.dp))
+        Row (
             modifier = Modifier
-                .padding(10.dp)
-        )
+                .fillMaxWidth()
+                .size(50.dp)
+                .clip(RoundedCornerShape(13.dp))
+                .background(color = MaterialTheme.colorScheme.surfaceVariant),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.user),
+                contentDescription = "Username Icon",
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 15.dp)
+            )
+            Text(text = interviewResult.value.date, modifier = Modifier.padding(10.dp))
+        }
+        Text(text = context.getString(R.string.interview_comment), modifier = Modifier.padding(10.dp))
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(50.dp)
+                .clip(RoundedCornerShape(13.dp))
+                .background(color = MaterialTheme.colorScheme.surfaceVariant),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.user),
+                contentDescription = "Username Icon",
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 15.dp)
+            )
+            Text(text = interviewResult.value.comments, modifier = Modifier.padding(10.dp))
+        }
+
+        Divider(modifier = Modifier.padding(10.dp))
 
         Boton(
-            context.getString(R.string.save_test_button),
-            valid = valid,
+            label = context.getString(R.string.interview_atras),
             onClick = {
-                clicked = true
+                navController.popBackStack()
             })
-
-        if (showDialog) {
-            Dialog(onDismissRequest = { showDialog = false }) {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.7f),
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .shadow(2.dp, RoundedCornerShape(13.dp))
-                            .clip(RoundedCornerShape(13.dp))
-                            .background(color = MaterialTheme.colorScheme.surface)
-                            .border(
-                                width = 1.dp,
-                                color = MaterialTheme.colorScheme.surfaceVariant,
-                                shape = RoundedCornerShape(13.dp)
-                            ),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .background(color = MaterialTheme.colorScheme.primary),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.Center
-                        ) {
-                            Text(
-                                text = context.getString(R.string.app_name),
-                                fontSize = 15.sp,
-                                modifier = Modifier.padding(10.dp),
-                                color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        }
-                        Text(
-                            text = context.getString(R.string.save_test_exito),
-                            modifier = Modifier.padding(10.dp),
-                        )
-                        Button(
-                            modifier = Modifier.padding(10.dp),
-                            onClick ={
-                                showDialog = false
-                                navController.navigate("home")
-                            }) {
-                            Text(text = context.getString(R.string.aceptar))
-                        }
-
-                    }
-                }
-            }
-        }
     }
 }
