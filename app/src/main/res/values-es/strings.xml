@@ -62,4 +62,5 @@
     <string name="splash_interviews_checked">Entrevistas comprobado</string>
     <string name="splash_interviews_not_checked">No hay respuesta de entrevistas</string>
     <string name="layout_interviews">Entrevistas</string>
+    <string name="layout_interview">Resultado de entrevista</string>
 </resources>

@@ -14,6 +14,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -126,11 +127,11 @@ fun Interviews(navController: NavController, title: MutableState<String>, img: M
                     if(result.value.id != 0) {
                         IconButton(
                             onClick = {
-                                //navController.navigate("save_technical_test/${item.id}")
+                                navController.navigate("save_interview/${item.id}")
                             }
                         ) {
                             Icon(
-                                imageVector = Icons.Filled.AccountCircle,
+                                imageVector = Icons.Filled.Search,
                                 contentDescription = null,
                                 tint = MaterialTheme.colorScheme.primary
                             )

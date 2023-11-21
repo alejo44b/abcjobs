@@ -65,4 +65,5 @@
     <string name="splash_interviews_checked">Interviews Checked</string>
     <string name="splash_interviews_not_checked">No response from interviews</string>
     <string name="layout_interviews">Interviews</string>
+    <string name="layout_interview">Interview Result</string>
 </resources>

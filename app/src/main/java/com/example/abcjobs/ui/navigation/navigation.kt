@@ -12,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.R
 import com.example.abcjobs.ui.candidate.NewCandidate
 import com.example.abcjobs.ui.dashboard.Home
+import com.example.abcjobs.ui.interview.InterviewResult
 import com.example.abcjobs.ui.interview.Interviews
 import com.example.abcjobs.ui.login.Login
 import com.example.abcjobs.ui.login.Register
@@ -75,6 +76,17 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
             title.value = context.getString(R.string.layout_interviews)
             img.value = R.drawable.test
             Interviews(navController, title, img)
+        }
+        composable(DashboardScreens.SaveInterview.route) { backStackEntry ->
+            val context = LocalContext.current
+            title.value = context.getString(R.string.layout_interview)
+            img.value = R.drawable.test
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            if (id != null) {
+                InterviewResult(navController = navController, title = title, img = img, id = id)
+            } else {
+                // Maneja el caso en que id es null
+            }
         }
     }
 }
