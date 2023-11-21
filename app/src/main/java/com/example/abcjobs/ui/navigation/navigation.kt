@@ -15,6 +15,7 @@ import com.example.abcjobs.ui.dashboard.Home
 import com.example.abcjobs.ui.login.Login
 import com.example.abcjobs.ui.login.Register
 import com.example.abcjobs.ui.login.SplashScreen
+import com.example.abcjobs.ui.technical_tests.SaveTechnicalTest
 import com.example.abcjobs.ui.technical_tests.TechnicalTests
 
 @Composable
@@ -49,13 +50,24 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
             val context = LocalContext.current
             title.value = context.getString(R.string.tecnical_tests)
             img.value = R.drawable.test
-            TechnicalTests(title = title, img = img)
+            TechnicalTests( navController, title, img)
         }
         composable(DashboardScreens.Home.route){
             val context = LocalContext.current
             title.value = context.getString(R.string.layout_home)
             img.value = R.drawable.home
             Home(title = title, img = img )
+        }
+        composable(DashboardScreens.SaveTechnicalTest.route) { backStackEntry ->
+            val context = LocalContext.current
+            title.value = context.getString(R.string.layout_technical_test)
+            img.value = R.drawable.test
+            val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
+            if (id != null) {
+                SaveTechnicalTest(navController, title, img, id)
+            } else {
+                // Maneja el caso en que id es null
+            }
         }
     }
 }

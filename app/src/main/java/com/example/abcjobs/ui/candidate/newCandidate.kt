@@ -231,7 +231,7 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
                             )
                         }
                         Text(
-                            text ="¡Candidato registrado con exito!",
+                            text = context.getString(R.string.newCan_exito),
                             modifier = Modifier.padding(10.dp),
                         )
                         Button(
@@ -240,7 +240,7 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
                                 showDialog = false
                                 navController.navigate("home")
                         }) {
-                            Text("Aceptar")
+                            Text(context.getString(R.string.aceptar))
                         }
 
                     }

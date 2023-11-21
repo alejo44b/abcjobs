@@ -85,6 +85,9 @@ dependencies {
     implementation ("com.google.accompanist:accompanist-insets:0.16.0")
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.16.0")
 
+    implementation ("io.github.vanpra.compose-material-dialogs:core:0.9.0")
+    implementation ("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
+
     implementation("com.android.volley:volley:1.2.1")
     implementation ("com.google.code.gson:gson:2.9.0")
 
