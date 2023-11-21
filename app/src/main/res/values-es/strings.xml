@@ -50,4 +50,13 @@
     <string name="tests_action">Acción</string>
     <string name="splash_technicaltests_checked">Pruebas comprobado</string>
     <string name="splash_technicaltests_not_checked">No hay respuesta de pruebas</string>
+    <string name="layout_technical_test">Resultado de Prueba Técnica</string>
+    <string name="save_test_date">Fecha</string>
+    <string name="save_test_resultado">Resultado</string>
+    <string name="save_test_comment">Comentarios</string>
+    <string name="save_test_button">Guardar</string>
+    <string name="newCan_exito">¡Candidato registrado con exito!</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="login_asset_numeric">El campo debe contener solo números</string>
+    <string name="save_test_exito">¡Resultado guardado!</string>
 </resources>

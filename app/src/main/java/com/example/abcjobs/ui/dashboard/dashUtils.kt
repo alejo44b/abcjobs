@@ -70,6 +70,7 @@ fun Campo(text: MutableState<String>, labelValue:String, painter: Int, validator
                 errorMessage = if(validators.contains("Alphanumeric_es") && !Pattern.matches("^[a-zA-Z0-9 ]*$", it)) context.getString(R.string.login_asset_alfanumerico) else errorMessage
                 errorMessage = if(validators.contains("Email") && !android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()) context.getString(
                     R.string.login_asset_email) else errorMessage
+                errorMessage = if(validators.contains("Numeric") && !Pattern.matches("^[0-9]*$", it)) context.getString(R.string.login_asset_numeric) else errorMessage
                 errorMessage = if(validators.contains("Required") && it.isEmpty()) context.getString(
                     R.string.login_asset_required) else errorMessage
                 valid.value = errorMessage == null
@@ -83,6 +84,7 @@ fun Campo(text: MutableState<String>, labelValue:String, painter: Int, validator
                         errorMessage = if(validators.contains("Alphanumeric") && !pattern.matcher(text.value).matches()) context.getString(R.string.login_asset_alfanumerico) else null
                         errorMessage = if(validators.contains("Alphanumeric_es") && !Pattern.matches("^[a-zA-Z0-9 ]*$", text.value)) context.getString(R.string.login_asset_alfanumerico) else errorMessage
                         errorMessage = if(validators.contains("Email") && !android.util.Patterns.EMAIL_ADDRESS.matcher(text.value).matches()) context.getString(R.string.login_asset_email) else errorMessage
+                        errorMessage = if(validators.contains("Numeric") && !Pattern.matches("^[0-9]*$", text.value)) context.getString(R.string.login_asset_numeric) else errorMessage
                         errorMessage = if(validators.contains("Required") && text.value.isEmpty()) context.getString(R.string.login_asset_required) else errorMessage
                         valid.value = errorMessage == null
                     }

@@ -31,12 +31,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.abcjobs.R
 import com.example.abcjobs.data.models.TechnicalTest
+import com.example.abcjobs.data.models.TechnicalTestResult
 import com.example.abcjobs.services.network.TechnicalTestAdapter
+import com.example.abcjobs.ui.navigation.DashboardScreens
 
 @Composable
-fun TechnicalTests(title: MutableState<String>, img: MutableState<Int>) {
+fun TechnicalTests(navController: NavController, title: MutableState<String>, img: MutableState<Int>) {
     val context = LocalContext.current
     title.value = context.getString(R.string.tecnical_tests)
     img.value = R.drawable.test
@@ -92,6 +95,15 @@ fun TechnicalTests(title: MutableState<String>, img: MutableState<Int>) {
         )
         LazyColumn{
             items(tests.value) { item ->
+                val result = remember { mutableStateOf(TechnicalTestResult(
+                    id = 0,
+                    technicalTestId = item.id,
+                    result = 0,
+                    date = ""
+                )) }
+                LaunchedEffect(true){
+                    result.value = TechnicalTestAdapter.getInstance(context).getResult(item.id, token!!)
+                }
                 Row (
                     modifier = Modifier
                         .fillMaxWidth()
@@ -106,14 +118,18 @@ fun TechnicalTests(title: MutableState<String>, img: MutableState<Int>) {
                     Text(text = item.date, modifier = Modifier
                         .weight(2f)
                         .padding(10.dp), fontSize = 12.sp)
-                    IconButton(
-                        onClick = {}
-                    ){
-                        Icon(
-                            imageVector = Icons.Filled.AddCircle,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
+                    if(result.value.id == 0) {
+                        IconButton(
+                            onClick = {
+                                navController.navigate("save_technical_test/${item.id}")
+                            }
+                        ) {
+                            Icon(
+                                imageVector = Icons.Filled.AddCircle,
+                                contentDescription = null,
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
                     }
                 }
                 Divider(
@@ -131,5 +147,5 @@ fun TechnicalTestsPreview() {
     val context = LocalContext.current
     val title = remember { mutableStateOf(context.getString(R.string.layout_home)) }
     val img = remember { mutableIntStateOf(R.drawable.home) }
-    TechnicalTests(title = title, img = img)
+    TechnicalTests(navController = NavController(context), title = title, img = img)
 }

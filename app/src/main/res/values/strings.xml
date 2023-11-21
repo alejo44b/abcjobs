@@ -53,4 +53,13 @@
     <string name="tests_action">Action</string>
     <string name="splash_technicaltests_checked">Tests Checked</string>
     <string name="splash_technicaltests_not_checked">No response from tests</string>
+    <string name="layout_technical_test">Technical Test Result</string>
+    <string name="save_test_date">Date</string>
+    <string name="save_test_resultado">Result</string>
+    <string name="save_test_comment">Comments</string>
+    <string name="save_test_button">Save</string>
+    <string name="newCan_exito">Successful candidate registration!</string>
+    <string name="aceptar">Accept</string>
+    <string name="login_asset_numeric">The field should only contain numbers</string>
+    <string name="save_test_exito">Result saved!</string>
 </resources>
