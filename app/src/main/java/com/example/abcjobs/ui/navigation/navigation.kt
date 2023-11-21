@@ -82,10 +82,11 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
             title.value = context.getString(R.string.layout_interview)
             img.value = R.drawable.test
             val id = backStackEntry.arguments?.getString("id")?.toIntOrNull()
-            if (id != null) {
-                InterviewResult(navController = navController, title = title, img = img, id = id)
+            val candidateName = backStackEntry.arguments?.getString("candidateName")
+            if (id != null && candidateName != null) {
+                InterviewResult(navController = navController, title = title, img = img, id = id, candidate = candidateName)
             } else {
-                // Maneja el caso en que id es null
+                // Maneja el caso en que id o candidateName son null
             }
         }
     }

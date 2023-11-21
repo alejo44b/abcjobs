@@ -63,4 +63,8 @@
     <string name="splash_interviews_not_checked">No hay respuesta de entrevistas</string>
     <string name="layout_interviews">Entrevistas</string>
     <string name="layout_interview">Resultado de entrevista</string>
+    <string name="interview_resultado">Resultado</string>
+    <string name="interview_fecha">Fecha y hora</string>
+    <string name="interview_comment">Comentarios</string>
+    <string name="interview_atras">Atrás</string>
 </resources>

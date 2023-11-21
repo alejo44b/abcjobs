@@ -79,6 +79,36 @@ class InterviewAdapter constructor(context: Context) {
             }))
     }
 
+    suspend fun getInterview(id: Int, token: String): Interview = suspendCoroutine { cont ->
+        requestQueue.add(getRequestJson("/interviews/$id",
+            token,
+            { response ->
+                val interview = Interview(
+                    companyId = response.getInt("companyId"),
+                    companyName = response.getString("companyName"),
+                    date = response.getString("date"),
+                    id = response.getInt("id"),
+                    itSpecialistId = response.getInt("itSpecialistId"),
+                    itSpecialistName = response.getString("itSpecialistName"),
+                    projectId = response.getInt("projectId"),
+                    projectName = response.getString("projectName"),
+                    result = response.getInt("result")
+                )
+                cont.resume(interview)
+            }, {
+                cont.resume(Interview(
+                    companyId = 0,
+                    companyName = "",
+                    date = "",
+                    id = 0,
+                    itSpecialistId = 0,
+                    itSpecialistName = "",
+                    projectId = 0,
+                    projectName = "",
+                    result = 0
+                ))
+            }))
+    }
     suspend fun getInterviewResult(id: Int, token: String): InterviewResult = suspendCoroutine { cont ->
         requestQueue.add(getRequestJson("/interviews_results/$id",
             token,
