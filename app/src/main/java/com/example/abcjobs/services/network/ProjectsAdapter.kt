@@ -49,9 +49,9 @@ class ProjectsAdapter constructor(context: Context) {
                 for(i in 0 until response.length()){
                     val project = response.getJSONObject(i)
                     projects.add(Project(
-                        city = project.getString("city"),
-                        country = project.getString("country"),
-                        department = project.getString("department"),
+                        city = project.getString("City"),
+                        country = project.getString("Country"),
+                        department = project.getString("Department"),
                         companyId = project.getDouble("companyId"),
                         createdAt = project.getString("createdAt"),
                         id = project.getDouble("id"),

@@ -70,4 +70,13 @@
     <string name="interview_fecha">Date and time</string>
     <string name="interview_comment">Comments</string>
     <string name="interview_atras">Back</string>
+    <string name="splash_projects_checked">Projects Checked</string>
+    <string name="splash_projects_not_checked">No response from projects</string>
+    <string name="splash_selections_checked">Selections checked</string>
+    <string name="splash_selections_not_checked">No response from selections</string>
+    <string name="selection_company">Company</string>
+    <string name="selection_project">Project</string>
+    <string name="selection_team">Team</string>
+    <string name="selection_candidate">Candidate</string>
+    <string name="layout_selection">Selection</string>
 </resources>

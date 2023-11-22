@@ -67,4 +67,13 @@
     <string name="interview_fecha">Fecha y hora</string>
     <string name="interview_comment">Comentarios</string>
     <string name="interview_atras">Atrás</string>
+    <string name="splash_projects_checked">Projectos comprobado</string>
+    <string name="splash_projects_not_checked">No hay respuesta de projectos</string>
+    <string name="splash_selections_checked">Selecciones comprobado</string>
+    <string name="splash_selections_not_checked">No hay respuesta de selecciones</string>
+    <string name="selection_company">Compañía</string>
+    <string name="selection_project">Proyecto</string>
+    <string name="selection_team">Equipo</string>
+    <string name="selection_candidate">Candidato</string>
+    <string name="layout_selection">Selección</string>
 </resources>

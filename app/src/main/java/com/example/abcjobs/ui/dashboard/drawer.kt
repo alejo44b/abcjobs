@@ -28,6 +28,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Build
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -121,6 +122,12 @@ fun DrawerMenu(
                                         title = context.getString(R.string.layout_interviews),
                                         icon = Icons.Filled.AccountBox,
                                         contentDescription = context.getString(R.string.layout_interviews)
+                                    ),
+                                    MenuItem(
+                                        id = "selection",
+                                        title = context.getString(R.string.layout_selection),
+                                        icon = Icons.Filled.Check,
+                                        contentDescription = context.getString(R.string.layout_selection)
                                     )
                                 )).toMutableList()
                             items += listOf(
@@ -143,6 +150,9 @@ fun DrawerMenu(
                                     }
                                     else if (it.id == "listTest"){
                                         navController.navigate("technical_tests")
+                                    }
+                                    else if (it.id == "selection"){
+                                        navController.navigate("selection")
                                     }
                                     else if (it.id == "logout") {
                                         val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
