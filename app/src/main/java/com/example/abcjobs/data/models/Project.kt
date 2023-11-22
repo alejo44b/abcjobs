@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
-data class Protect(
+data class Project(
     val city: String,
     val country: String,
     val department: String,
