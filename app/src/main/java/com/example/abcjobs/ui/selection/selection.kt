@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -42,8 +43,10 @@ import androidx.navigation.NavController
 import com.example.abcjobs.R
 import com.example.abcjobs.data.models.Interview
 import com.example.abcjobs.data.models.Select
+import com.example.abcjobs.services.network.CompanyAdapter
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.ProjectsAdapter
+import com.example.abcjobs.services.network.SelectionAdapter
 import com.example.abcjobs.ui.dashboard.Boton
 import com.example.abcjobs.ui.dashboard.Campo
 import com.example.abcjobs.ui.dashboard.CampoMultilinea
@@ -53,24 +56,24 @@ import com.google.accompanist.insets.imePadding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.time.LocalDateTime
 
+@SuppressLint("SuspiciousIndentation")
 @Composable
 fun Selection(navController: NavController, title: MutableState<String>, img: MutableState<Int>) {
     val context = LocalContext.current
     title.value = context.getString(R.string.menu_newCandidate)
     img.value = R.drawable.usuario_logo
 
-    val company = remember { mutableStateOf(context.getString(R.string.selection_company)) }
     val project = remember { mutableStateOf(context.getString(R.string.selection_project)) }
     val team = remember { mutableStateOf(context.getString(R.string.selection_team)) }
     val candidate = remember { mutableStateOf(context.getString(R.string.selection_candidate)) }
 
-    val companyId = remember { mutableIntStateOf(0) }
     val projectId = remember { mutableIntStateOf(0) }
     val teamId = remember { mutableIntStateOf(0) }
     val candidateId = remember { mutableIntStateOf(0) }
 
-    val companyList = remember { mutableStateOf(context.getString(R.string.selection_company)) }
+    val company = remember { mutableStateOf(context.getString(R.string.selection_company)) }
     val projectList = remember { mutableStateOf(emptyArray<Select>()) }
     val teamList = remember { mutableStateOf(emptyArray<Select>()) }
     val candidateList = remember { mutableStateOf(emptyArray<Select>()) }
@@ -83,6 +86,7 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
 
     val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
     val token = sharedPref.getString("token", null)
+    val companyId = sharedPref.getInt("companyId", 0)
 
     LaunchedEffect(true){
         ProjectsAdapter.getInstance(context).getProjects(token!!).forEach {
@@ -98,31 +102,38 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
         }
     }
 
-    /*LaunchedEffect(nombre.value, email.value, nacionalidad.value, profesion.value, especialidad.value, resumen.value) {
-        valid.value =
-            if (nombre.value.isEmpty() || email.value.isEmpty()
-                || nacionalidad.value == context.getString(R.string.newCan_Nacionalidad)
-                || profesion.value.isEmpty() || especialidad.value == context.getString(R.string.newCan_Specialization)
-                || resumen.value.isEmpty()) false else valid.value
-    }*/
+    LaunchedEffect(true){
+        ItSpecialistsAdapter.getInstance(context).getItSpecialists(token!!).forEach {
+            val select = Select(it.id.toInt(), it.name)
+            candidateList.value += select
+        }
+    }
 
-    /*if (clicked) {
-        val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)
-        val userId = sharedPref.getString("id", null)?.toInt()
-        val token = sharedPref.getString("token", null)
+    LaunchedEffect(true){
+        company.value = CompanyAdapter.getInstance(context).getCompany(companyId, token!!).name
+    }
+
+    LaunchedEffect(projectId.intValue, teamId.intValue, candidateId.intValue) {
+        valid.value = !(projectId.intValue == 0 || teamId.intValue == 0 || candidateId.intValue == 0)
+    }
+
+    /*
+    only=('itSpecialistId','companyId','projectId','teamId','selectionDate')
+     */
+
+    if (clicked) {
+        val now = LocalDateTime.now().withSecond(0).withNano(0)
         val json = JSONObject()
-            .put("userId", userId)
-            .put("name", nombre.value)
-            .put("email", email.value)
-            .put("nationality", nacionalidad.value)
-            .put("profession", profesion.value)
-            .put("speciality", especialidad.value)
-            .put("profile", resumen.value)
+            json.put("itSpecialistId", candidateId.intValue)
+            json.put("companyId", companyId)
+            json.put("projectId", projectId.intValue)
+            json.put("teamId", teamId.intValue)
+            json.put("selectionDate", now.toString())
         valid.value = false
         LaunchedEffect(Unit){
             withContext(Dispatchers.IO) {
                 try {
-                    if (ItSpecialistsAdapter.getInstance(context).createItSpecialist(json, token!!)) {
+                    if (SelectionAdapter.getInstance(context).createSelection(token!!, json)) {
                         showDialog = true
                     }
                 }catch (e: Exception){
@@ -132,34 +143,34 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
         }
         valid.value = true
         clicked = false
-    }*/
+    }
 
     Column (modifier = Modifier
         .fillMaxWidth()
         .verticalScroll(scrollState)
         .imePadding()
     ){
-        Select(listOf(
-            "Colombia",
-            "Canada",
-            "EE UU",
-        ), company, R.drawable.nacionalidad)
+        Text(text = context.getString(R.string.selection_company), modifier = Modifier.padding(10.dp))
+        Row (
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(50.dp)
+                .clip(RoundedCornerShape(13.dp))
+                .background(color = MaterialTheme.colorScheme.surfaceVariant),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.user),
+                contentDescription = "Username Icon",
+                modifier = Modifier
+                    .size(40.dp)
+                    .padding(start = 15.dp)
+            )
+            Text(text = company.value, modifier = Modifier.padding(10.dp))
+        }
         SelectId(projectList.value.toList(), projectId, project, R.drawable.trabajo)
-        SelectId(teamList.value.toList(), teamId, team, R.drawable.trabajo)
-        Select(listOf(
-            ".NET Junior Architect",
-            ".NET Semi-Senior Architect",
-            ".NET Senior Architect",
-            ".NET Junior Developer",
-            ".NET Semi-Senior Developer",
-            ".NET Senior Developer",
-            "Java Junior Architect",
-            "Java Semi-Senior Architect",
-            "Java Senior Architect",
-            "Java Junior Developer",
-            "Java Semi-Senior Developer",
-            "Java Senior Developer",
-        ), candidate, R.drawable.trabajo)
+        SelectId(teamList.value.toList(), teamId, team, R.drawable.user)
+        SelectId(candidateList.value.toList(), candidateId, candidate, R.drawable.user)
         Boton(
             context.getString(R.string.newCan_button),
             valid = valid,

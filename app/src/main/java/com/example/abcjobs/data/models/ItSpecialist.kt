@@ -12,3 +12,15 @@ data class ItSpecialist(
     val speciality: String,
     val profile: String
 ):Parcelable
+
+@Parcelize
+data class ItSpecialistId(
+    val id: Int,
+    val userId: Int,
+    val name: String,
+    val email: String,
+    val nationality: String,
+    val profession: String,
+    val speciality: String,
+    val profile: String
+):Parcelable

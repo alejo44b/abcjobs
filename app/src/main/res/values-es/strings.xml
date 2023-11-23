@@ -76,4 +76,6 @@
     <string name="selection_team">Equipo</string>
     <string name="selection_candidate">Candidato</string>
     <string name="layout_selection">Selección</string>
+    <string name="splash_companies_checked">Compañías comprobadas</string>
+    <string name="splash_companies_not_checked">No hay respuesta de compañías</string>
 </resources>

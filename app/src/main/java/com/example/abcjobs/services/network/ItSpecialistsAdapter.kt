@@ -5,9 +5,12 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.abcjobs.data.models.ItSpecialistId
+import org.json.JSONArray
 import kotlin.coroutines.suspendCoroutine
 
 import org.json.JSONObject
@@ -47,6 +50,31 @@ class ItSpecialistsAdapter constructor(context: Context) {
                 cont.resume(false)
             }))
     }
+    suspend fun getItSpecialists(token: String):Array<ItSpecialistId> = suspendCoroutine {cont ->
+        requestQueue.add(getRequestJsonArray("/it_specialists",
+            token,
+            {response ->
+                val itSpecialists = ArrayList<ItSpecialistId>()
+                for (i in 0 until response.length()){
+                    val itSpecialist = response.getJSONObject(i)
+                    itSpecialists.add(
+                        ItSpecialistId(
+                            id = itSpecialist.getInt("id"),
+                            userId = itSpecialist.getInt("userId"),
+                            name = itSpecialist.getString("name"),
+                            email = itSpecialist.getString("email"),
+                            nationality = itSpecialist.getString("nationality"),
+                            profession = itSpecialist.getString("profession"),
+                            speciality = itSpecialist.getString("speciality"),
+                            profile = itSpecialist.getString("profile")
+                        )
+                    )
+                }
+                cont.resume(itSpecialists.toTypedArray())
+            }, {
+                cont.resumeWithException(it)
+            }))
+    }
 
     private val requestQueue: RequestQueue by lazy {
         Volley.newRequestQueue(context.applicationContext)
@@ -63,6 +91,23 @@ class ItSpecialistsAdapter constructor(context: Context) {
             }
         }
     }
+
+    private fun getRequestJsonArray(path: String, token: String, responseListener: Response.Listener<JSONArray>, errorListener: Response.ErrorListener): JsonArrayRequest {
+        return object : JsonArrayRequest(
+            Request.Method.GET,
+            BASE_URL + path,
+            null,
+            responseListener,
+            errorListener
+        ) {
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer $token"
+                return headers
+            }
+        }
+    }
+
     private fun putRequest(path: String, body: JSONObject,  responseListener: Response.Listener<JSONObject>, errorListener: Response.ErrorListener ):JsonObjectRequest{
         return  JsonObjectRequest(Request.Method.PUT, BASE_URL +path, body, responseListener, errorListener)
     }
