@@ -43,7 +43,7 @@ class Security constructor(context: Context) {
             jsonUser,
             { response ->
                 val token = Token(
-                    companyId = response.getString("companyId"),
+                    companyId = response.getInt("companyId"),
                     createdAt = response.getString("createdAt"),
                     email = response.getString("email"),
                     expiredAt = response.getString("expireAt"),
@@ -58,7 +58,7 @@ class Security constructor(context: Context) {
                     putString("username", token.username)
                     putString("role", token.role)
                     putString("email", token.email)
-                    putString("companyId", token.companyId)
+                    putInt("companyId", token.companyId)
                     putString("id", token.id.toString())
                     putString("createdAt", token.createdAt)
                     putString("expiredAt", token.expiredAt)

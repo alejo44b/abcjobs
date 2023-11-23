@@ -30,7 +30,6 @@ class InterviewAdapter constructor(context: Context) {
                 }
             }
     }
-
     suspend fun pong(): Boolean = suspendCoroutine { cont ->
         requestQueue.add(getRequest("",
             {
@@ -41,17 +40,6 @@ class InterviewAdapter constructor(context: Context) {
                 cont.resume(false)
             }))
     }
-/*
-    val companyId: Int,
-    val companyName: String,
-    val date: String,
-    val id: Int,
-    val itSpecialistId: Int,
-    val itSpecialistName: String,
-    val projectId: Int,
-    val projectName: String,
-    val result: Int
-* */
     suspend fun getInterviews(token: String): Array<Interview> = suspendCoroutine { cont ->
         requestQueue.add(getRequestJsonArray("/interviewsList",
             token,

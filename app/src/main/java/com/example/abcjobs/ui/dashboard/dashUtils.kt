@@ -44,6 +44,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.abcjobs.R
+import com.example.abcjobs.data.models.Select
 import java.util.regex.Pattern
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -256,6 +257,68 @@ fun Select(items: List<String>, selectedItem: MutableState<String>, img: Int) {
 
 }
 
+@Composable
+fun SelectId(items: List<Select>, id: MutableState<Int>, selectedItem: MutableState<String>, img: Int) {
+    var expanded by remember { mutableStateOf(false) }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 10.dp, bottom = 5.dp),
+    ) {
+        TextButton(
+            shape = RoundedCornerShape(13.dp),
+            colors = ButtonDefaults.textButtonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceVariant,
+            ),
+            onClick = { expanded = true },
+            modifier = Modifier
+                .fillMaxWidth()
+                .size(50.dp),
+        ) {
+            Row (
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start,
+                modifier = Modifier.fillMaxWidth()
+            ){
+                Image(
+                    painter = painterResource(id = img),
+                    contentDescription = "ABC Jobs",
+                    Modifier
+                        .size(40.dp)
+                        .padding(end = 10.dp)
+                )
+                Text(
+                    text = selectedItem.value,
+                    style = TextStyle(
+                        fontSize = 17.sp,
+                        fontWeight = FontWeight.Normal
+                    ),
+                    color = MaterialTheme.colorScheme.outline
+                )
+            }
+        }
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 25.dp)
+        ) {
+            items.forEach{label ->
+                DropdownMenuItem(
+                    text = { Text(label.name) },
+                    onClick = {
+                        selectedItem.value = label.name
+                        id.value = label.id
+                        expanded = false },
+                    modifier = Modifier
+                        .padding(horizontal = 25.dp)
+                )
+            }
+        }
+    }
+
+}
 @Composable
 fun Boton(label: String, onClick: () -> Unit, valid: MutableState<Boolean> = mutableStateOf(true)) {
     Column(

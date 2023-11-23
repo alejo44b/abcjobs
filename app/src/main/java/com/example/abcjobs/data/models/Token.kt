@@ -5,7 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class Token(
-    val companyId: String,
+    val companyId: Int,
     val createdAt: String,
     val email: String,
     val expiredAt: String,
