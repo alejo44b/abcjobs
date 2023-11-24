@@ -1,6 +1,5 @@
-package com.example.abcjobs.ui.selection
+package com.example.abcjobs.ui.performance
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Image
@@ -11,13 +10,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -41,31 +43,34 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.abcjobs.R
-import com.example.abcjobs.data.models.Interview
 import com.example.abcjobs.data.models.Select
 import com.example.abcjobs.services.network.CompanyAdapter
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
+import com.example.abcjobs.services.network.PerformanceAdapter
 import com.example.abcjobs.services.network.ProjectsAdapter
 import com.example.abcjobs.services.network.SelectionAdapter
 import com.example.abcjobs.ui.dashboard.Boton
 import com.example.abcjobs.ui.dashboard.Campo
-import com.example.abcjobs.ui.dashboard.CampoMultilinea
-import com.example.abcjobs.ui.dashboard.Select
 import com.example.abcjobs.ui.dashboard.SelectId
 import com.google.accompanist.insets.imePadding
+import com.vanpra.composematerialdialogs.MaterialDialog
+import com.vanpra.composematerialdialogs.datetime.date.datepicker
+import com.vanpra.composematerialdialogs.datetime.time.timepicker
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
+import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
-@SuppressLint("SuspiciousIndentation")
 @Composable
-fun Selection(navController: NavController, title: MutableState<String>, img: MutableState<Int>) {
+fun Performance(navController: NavController, title: MutableState<String>, img: MutableState<Int>) {
     val context = LocalContext.current
-    title.value = context.getString(R.string.menu_newCandidate)
+    title.value = context.getString(R.string.layout_performance)
     img.value = R.drawable.usuario_logo
 
-    val project = remember { mutableStateOf(context.getString(R.string.selection_project)) }
     val team = remember { mutableStateOf(context.getString(R.string.selection_team)) }
     val candidate = remember { mutableStateOf(context.getString(R.string.selection_candidate)) }
 
@@ -88,12 +93,16 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
     val token = sharedPref.getString("token", null)
     val companyId = sharedPref.getInt("companyId", 0)
 
-    LaunchedEffect(true){
-        ProjectsAdapter.getInstance(context).getProjects(token!!).forEach {
-            val select = Select(it.id.toInt(), it.projectName)
-            projectList.value += select
-        }
-    }
+    val dialogState = rememberMaterialDialogState()
+    val timeState = rememberMaterialDialogState()
+
+    val date = remember { mutableStateOf(LocalDate.now()) }
+    val time = remember { mutableStateOf(LocalTime.now().withSecond(0)) }
+    val result = remember { mutableStateOf("") }
+    val comment = remember { mutableStateOf("") }
+
+    val datetime = remember { mutableStateOf("${date.value}T${time.value.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}") }
+
 
     LaunchedEffect(true){
         ProjectsAdapter.getInstance(context).getTeams(token!!).forEach {
@@ -118,18 +127,18 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
     }
 
     if (clicked) {
-        val now = LocalDateTime.now().withSecond(0).withNano(0)
         val json = JSONObject()
-            json.put("itSpecialistId", candidateId.intValue)
-            json.put("companyId", companyId)
-            json.put("projectId", projectId.intValue)
-            json.put("teamId", teamId.intValue)
-            json.put("selectionDate", now.toString())
+        json.put("itSpecialistId", candidateId.intValue)
+        json.put("teamId", teamId.intValue)
+        json.put("evaluation", result.value.toInt())
+        json.put("comments", comment.value)
+        json.put("date", datetime.value)
+
         valid.value = false
         LaunchedEffect(Unit){
             withContext(Dispatchers.IO) {
                 try {
-                    if (SelectionAdapter.getInstance(context).createSelection(token!!, json)) {
+                    if (PerformanceAdapter.getInstance(context).addPerformance(json, token!!)) {
                         showDialog = true
                     }
                 }catch (e: Exception){
@@ -140,13 +149,20 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
         valid.value = true
         clicked = false
     }
-
     Column (modifier = Modifier
         .fillMaxWidth()
         .verticalScroll(scrollState)
         .imePadding()
     ){
-        Text(text = context.getString(R.string.selection_company), modifier = Modifier.padding(10.dp))
+        Text(text = context.getString(R.string.selection_candidate), modifier = Modifier.padding(10.dp))
+        SelectId(candidateList.value.toList(), candidateId, candidate, R.drawable.user)
+        Text(text = context.getString(R.string.selection_team), modifier = Modifier.padding(10.dp))
+        SelectId(teamList.value.toList(), teamId, team, R.drawable.user)
+        Text(text = context.getString(R.string.save_test_resultado), modifier = Modifier.padding(10.dp))
+        Campo(result, context.getString(R.string.save_test_resultado), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required"))
+        Text(text = context.getString(R.string.save_test_comment), modifier = Modifier.padding(10.dp))
+        Campo(comment, context.getString(R.string.save_test_comment), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required"))
+        Text(text = context.getString(R.string.save_test_date), modifier = Modifier.padding(10.dp))
         Row (
             modifier = Modifier
                 .fillMaxWidth()
@@ -154,19 +170,61 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
                 .clip(RoundedCornerShape(13.dp))
                 .background(color = MaterialTheme.colorScheme.surfaceVariant),
             verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.user),
-                contentDescription = "Username Icon",
-                modifier = Modifier
-                    .size(40.dp)
-                    .padding(start = 15.dp)
-            )
-            Text(text = company.value, modifier = Modifier.padding(10.dp))
+            horizontalArrangement = Arrangement.SpaceBetween
+        ){
+            Text(text = datetime.value, modifier = Modifier.padding(10.dp))
+            Row {
+                IconButton(
+                    onClick = {
+                        dialogState.show()
+                    }
+                ){
+                    Icon(
+                        imageVector = Icons.Filled.DateRange,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+                }
+
+                IconButton(
+                    onClick = {
+                        timeState.show()
+                    }
+                ){
+                    Icon(
+                        painter = painterResource(id = R.drawable.time),
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier
+                            .size(20.dp)
+                    )
+                }
+            }
         }
-        SelectId(projectList.value.toList(), projectId, project, R.drawable.trabajo)
-        SelectId(teamList.value.toList(), teamId, team, R.drawable.user)
-        SelectId(candidateList.value.toList(), candidateId, candidate, R.drawable.user)
+
+
+        MaterialDialog(
+            dialogState = dialogState,
+            buttons = {
+                positiveButton("Ok")
+                negativeButton("Cancel")
+            },
+        ) {
+            datepicker(initialDate = date.value, onDateChange = { date.value = it })
+        }
+
+        MaterialDialog(
+            dialogState = timeState,
+            buttons = {
+                positiveButton("Ok")
+                negativeButton("Cancel")
+            }
+        ) {
+            timepicker(initialTime = time.value, onTimeChange = { time.value = it })
+        }
+
         Boton(
             context.getString(R.string.newCan_button),
             valid = valid,
@@ -228,9 +286,10 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
     }
 }
 
-@SuppressLint("UnrememberedMutableState")
 @Preview (showBackground = true)
 @Composable
-fun PreviewSelection() {
-    Selection(navController = NavController(LocalContext.current), title = mutableStateOf(""), img = mutableIntStateOf(0))
+fun PerformancePreview() {
+    val title = remember { mutableStateOf("Title") }
+    val img = remember { mutableIntStateOf(R.drawable.usuario_logo) }
+    Performance(navController = NavController(LocalContext.current), title = title, img = img)
 }

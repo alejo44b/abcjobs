@@ -17,6 +17,7 @@ import com.example.abcjobs.ui.interview.Interviews
 import com.example.abcjobs.ui.login.Login
 import com.example.abcjobs.ui.login.Register
 import com.example.abcjobs.ui.login.SplashScreen
+import com.example.abcjobs.ui.performance.Performance
 import com.example.abcjobs.ui.selection.Selection
 import com.example.abcjobs.ui.technical_tests.SaveTechnicalTest
 import com.example.abcjobs.ui.technical_tests.TechnicalTests
@@ -95,6 +96,12 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
             title.value = context.getString(R.string.layout_selection)
             img.value = R.drawable.test
             Selection(navController = navController, title = title , img = img )
+        }
+        composable(DashboardScreens.Performance.route){
+            val context = LocalContext.current
+            title.value = context.getString(R.string.layout_performance)
+            img.value = R.drawable.test
+            Performance(navController = navController, title = title, img = img)
         }
     }
 }
