@@ -128,6 +128,12 @@ fun DrawerMenu(
                                         title = context.getString(R.string.layout_selection),
                                         icon = Icons.Filled.Check,
                                         contentDescription = context.getString(R.string.layout_selection)
+                                    ),
+                                    MenuItem(
+                                        id = "performance",
+                                        title = context.getString(R.string.layout_performance),
+                                        icon = Icons.Filled.Check,
+                                        contentDescription = context.getString(R.string.layout_performance)
                                     )
                                 )).toMutableList()
                             items += listOf(
@@ -153,6 +159,9 @@ fun DrawerMenu(
                                     }
                                     else if (it.id == "selection"){
                                         navController.navigate("selection")
+                                    }
+                                    else if (it.id == "performance"){
+                                        navController.navigate("performance")
                                     }
                                     else if (it.id == "logout") {
                                         val sharedPref = context.getSharedPreferences("auth", ComponentActivity.MODE_PRIVATE)

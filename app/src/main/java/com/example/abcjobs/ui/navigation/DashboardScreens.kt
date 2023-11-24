@@ -8,4 +8,5 @@ sealed class DashboardScreens(val route: String) {
     object Interviews : DashboardScreens("interviews")
     object SaveInterview : DashboardScreens("save_interview/{id}/{candidateName}")
     object Selection : DashboardScreens("selection")
+    object Performance : DashboardScreens("performance")
 }
