@@ -46,6 +46,7 @@ import com.example.abcjobs.R
 import com.example.abcjobs.data.models.Select
 import com.example.abcjobs.services.network.CompanyAdapter
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
+import com.example.abcjobs.services.network.PerformanceAdapter
 import com.example.abcjobs.services.network.ProjectsAdapter
 import com.example.abcjobs.services.network.SelectionAdapter
 import com.example.abcjobs.ui.dashboard.Boton
@@ -104,9 +105,9 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
 
 
     LaunchedEffect(true){
-        ProjectsAdapter.getInstance(context).getProjects(token!!).forEach {
-            val select = Select(it.id.toInt(), it.projectName)
-            projectList.value += select
+        ProjectsAdapter.getInstance(context).getTeams(token!!).forEach {
+            val select = Select(it.id.toInt(), it.teamName)
+            teamList.value += select
         }
     }
 
@@ -126,18 +127,18 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
     }
 
     if (clicked) {
-        val now = LocalDateTime.now().withSecond(0).withNano(0)
         val json = JSONObject()
         json.put("itSpecialistId", candidateId.intValue)
-        json.put("companyId", companyId)
-        json.put("projectId", projectId.intValue)
         json.put("teamId", teamId.intValue)
-        json.put("selectionDate", now.toString())
+        json.put("evaluation", result.value.toInt())
+        json.put("comments", comment.value)
+        json.put("date", datetime.value)
+
         valid.value = false
         LaunchedEffect(Unit){
             withContext(Dispatchers.IO) {
                 try {
-                    if (SelectionAdapter.getInstance(context).createSelection(token!!, json)) {
+                    if (PerformanceAdapter.getInstance(context).addPerformance(json, token!!)) {
                         showDialog = true
                     }
                 }catch (e: Exception){
@@ -167,7 +168,6 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
                 .fillMaxWidth()
                 .size(50.dp)
                 .clip(RoundedCornerShape(13.dp))
-
                 .background(color = MaterialTheme.colorScheme.surfaceVariant),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween

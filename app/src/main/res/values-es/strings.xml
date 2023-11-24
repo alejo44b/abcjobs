@@ -79,4 +79,6 @@
     <string name="splash_companies_checked">Compañías comprobadas</string>
     <string name="splash_companies_not_checked">No hay respuesta de compañías</string>
     <string name="layout_performance">Desempeño</string>
+    <string name="splash_performances_checked">Performance comprobado</string>
+    <string name="splash_performances_not_checked">No hay respuesta de performance</string>
 </resources>

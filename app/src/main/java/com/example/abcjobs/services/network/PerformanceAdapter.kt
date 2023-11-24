@@ -33,6 +33,16 @@ class PerformanceAdapter constructor(context: Context){
                 cont.resume(false)
             }))
     }
+    suspend fun addPerformance(jsonPerformance: JSONObject, token: String): Boolean = suspendCoroutine { cont ->
+        requestQueue.add(postRequest("/performances",
+            jsonPerformance,
+            token,
+            {
+                cont.resume(true)
+            }, {
+                cont.resume(false)
+            }))
+    }
 
     private val requestQueue: RequestQueue by lazy {
         Volley.newRequestQueue(context.applicationContext)

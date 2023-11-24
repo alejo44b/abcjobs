@@ -31,6 +31,7 @@ import androidx.navigation.NavController
 import com.example.abcjobs.services.network.CompanyAdapter
 import com.example.abcjobs.services.network.InterviewAdapter
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
+import com.example.abcjobs.services.network.PerformanceAdapter
 import com.example.abcjobs.services.network.ProjectsAdapter
 import com.example.abcjobs.services.network.Security
 import com.example.abcjobs.services.network.SelectionAdapter
@@ -54,41 +55,47 @@ fun SplashScreen(navController: NavController, application: Application){
         val project = ProjectsAdapter(application)
         val selection = SelectionAdapter(application)
         val company = CompanyAdapter(application)
+        val performance = PerformanceAdapter(application)
 
         textoCarga = context.getString(R.string.splash_checking_servers)
         withContext(Dispatchers.IO) {
             try {
                 textoCarga = if (sec.pong()) context.getString(R.string.splash_users_checked) else context.getString(R.string.splash_users_not_checked)
-                for (i in 0..14) {
+                for (i in 0..12) {
                     progress = i / 100f
                     delay(10)
                 }
                 textoCarga = if (specialist.pong()) context.getString(R.string.splash_itspecialists_checked) else context.getString(R.string.splash_itspecialists_not_checked)
-                for (i in 14..28) {
+                for (i in 12..24) {
                     progress = i / 100f
                     delay(10)
                 }
                 textoCarga = if (technical.pong()) context.getString(R.string.splash_technicaltests_checked) else context.getString(R.string.splash_technicaltests_not_checked)
-                for (i in 28..42) {
+                for (i in 24..36) {
                     progress = i / 100f
                     delay(10)
                 }
                 textoCarga = if (interview.pong()) context.getString(R.string.splash_interviews_checked) else context.getString(R.string.splash_interviews_not_checked)
-                for (i in 42..56) {
+                for (i in 36..48) {
                     progress = i / 100f
                     delay(10)
                 }
                 textoCarga = if (project.pong()) context.getString(R.string.splash_projects_checked) else context.getString(R.string.splash_projects_not_checked)
-                for (i in 56..70) {
+                for (i in 48..60) {
                     progress = i / 100f
                     delay(10)
                 }
                 textoCarga = if (selection.pong()) context.getString(R.string.splash_selections_checked) else context.getString(R.string.splash_selections_not_checked)
-                for (i in 70..84) {
+                for (i in 60..72) {
                     progress = i / 100f
                     delay(10)
                 }
                 textoCarga = if (company.pong()) context.getString(R.string.splash_companies_checked) else context.getString(R.string.splash_companies_not_checked)
+                for (i in 72..84) {
+                    progress = i / 100f
+                    delay(10)
+                }
+                textoCarga = if (performance.pong()) context.getString(R.string.splash_performances_checked) else context.getString(R.string.splash_performances_not_checked)
                 for (i in 84..100) {
                     progress = i / 100f
                     delay(10)

@@ -82,4 +82,6 @@
     <string name="splash_companies_checked">Companies Checked</string>
     <string name="splash_companies_not_checked">No response from companies</string>
     <string name="layout_performance">Performance</string>
+    <string name="splash_performances_checked">Performance checked</string>
+    <string name="splash_performances_not_checked">No response from performance</string>
 </resources>
