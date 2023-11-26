@@ -52,7 +52,7 @@ fun Interviews(navController: NavController, title: MutableState<String>, img: M
     val tests = remember { mutableStateOf(emptyArray<Interview>()) }
 
     LaunchedEffect(true){
-        tests.value = InterviewAdapter.getInstance(context).getInterviews(token!!)
+        tests.value = InterviewAdapter.getInstance(context).getInterviews(token?:"")
     }
 
     Column (

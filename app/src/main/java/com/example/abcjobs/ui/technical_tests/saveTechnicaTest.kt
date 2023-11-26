@@ -10,16 +10,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.DateRange
-import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -48,13 +45,9 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.abcjobs.R
 import com.example.abcjobs.data.models.TechnicalTest
-import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.TechnicalTestAdapter
-import com.example.abcjobs.ui.candidate.NewCandidate
 import com.example.abcjobs.ui.dashboard.Boton
 import com.example.abcjobs.ui.dashboard.Campo
-import com.example.abcjobs.ui.dashboard.CampoMultilinea
-import com.example.abcjobs.ui.dashboard.Select
 import com.google.accompanist.insets.imePadding
 import com.vanpra.composematerialdialogs.MaterialDialog
 import com.vanpra.composematerialdialogs.datetime.date.datepicker
@@ -64,7 +57,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -115,7 +107,8 @@ fun SaveTechnicalTest(navController: NavController, title: MutableState<String>,
     }
 
     LaunchedEffect(true){
-        test.value = TechnicalTestAdapter.getInstance(context).getTechnicalTest(id,token!!)
+        test.value = TechnicalTestAdapter.getInstance(context).getTechnicalTest(id,token?:"" +
+        "")
     }
 
     if (clicked) {

@@ -84,4 +84,5 @@
     <string name="layout_performance">Performance</string>
     <string name="splash_performances_checked">Performance checked</string>
     <string name="splash_performances_not_checked">No response from performance</string>
+    <string name="newCan_exito2">The document has been uploaded successfully</string>
 </resources>

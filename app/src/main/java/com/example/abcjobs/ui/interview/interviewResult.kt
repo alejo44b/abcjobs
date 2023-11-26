@@ -104,7 +104,7 @@ fun InterviewResult(navController: NavController, title: MutableState<String>, i
     }
 
     LaunchedEffect(true){
-        interviewResult.value = InterviewAdapter.getInstance(context).getInterviewResult(id, token!!)
+        interviewResult.value = InterviewAdapter.getInstance(context).getInterviewResult(id, token?:"")
     }
 
     Column (modifier = Modifier

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -41,16 +40,12 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
 import com.example.abcjobs.R
-import com.example.abcjobs.data.models.Interview
 import com.example.abcjobs.data.models.Select
 import com.example.abcjobs.services.network.CompanyAdapter
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.ProjectsAdapter
 import com.example.abcjobs.services.network.SelectionAdapter
 import com.example.abcjobs.ui.dashboard.Boton
-import com.example.abcjobs.ui.dashboard.Campo
-import com.example.abcjobs.ui.dashboard.CampoMultilinea
-import com.example.abcjobs.ui.dashboard.Select
 import com.example.abcjobs.ui.dashboard.SelectId
 import com.google.accompanist.insets.imePadding
 import kotlinx.coroutines.Dispatchers
@@ -89,28 +84,28 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
     val companyId = sharedPref.getInt("companyId", 0)
 
     LaunchedEffect(true){
-        ProjectsAdapter.getInstance(context).getProjects(token!!).forEach {
+        ProjectsAdapter.getInstance(context).getProjects(token?:"").forEach {
             val select = Select(it.id.toInt(), it.projectName)
             projectList.value += select
         }
     }
 
     LaunchedEffect(true){
-        ProjectsAdapter.getInstance(context).getTeams(token!!).forEach {
+        ProjectsAdapter.getInstance(context).getTeams(token?:"").forEach {
             val select = Select(it.id.toInt(), it.teamName)
             teamList.value += select
         }
     }
 
     LaunchedEffect(true){
-        ItSpecialistsAdapter.getInstance(context).getItSpecialists(token!!).forEach {
+        ItSpecialistsAdapter.getInstance(context).getItSpecialists(token?:"").forEach {
             val select = Select(it.id.toInt(), it.name)
             candidateList.value += select
         }
     }
 
     LaunchedEffect(true){
-        company.value = CompanyAdapter.getInstance(context).getCompany(companyId, token!!).name
+        company.value = CompanyAdapter.getInstance(context).getCompany(companyId, token?:"").name
     }
 
     LaunchedEffect(projectId.intValue, teamId.intValue, candidateId.intValue) {
@@ -129,7 +124,7 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
         LaunchedEffect(Unit){
             withContext(Dispatchers.IO) {
                 try {
-                    if (SelectionAdapter.getInstance(context).createSelection(token!!, json)) {
+                    if (SelectionAdapter.getInstance(context).createSelection(token?:"", json)) {
                         showDialog = true
                     }
                 }catch (e: Exception){
