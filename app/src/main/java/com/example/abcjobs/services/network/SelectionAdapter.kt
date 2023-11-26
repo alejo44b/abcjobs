@@ -16,8 +16,8 @@ import kotlin.coroutines.suspendCoroutine
 
 class SelectionAdapter constructor(context: Context) {
     companion object {
-        const val BASE_URL = "http://10.0.2.2:3007"
-        //const val BASE_URL = "http://lb-selection-1765402036.us-east-1.elb.amazonaws.com"
+        //const val BASE_URL = "http://10.0.2.2:3007"
+        const val BASE_URL = "http://lb-selections-416679298.us-east-1.elb.amazonaws.com"
 
         var instance: SelectionAdapter? = null
         fun getInstance(context: Context) =

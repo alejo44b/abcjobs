@@ -18,9 +18,8 @@ import kotlin.coroutines.suspendCoroutine
 
 class ProjectsAdapter constructor(context: Context) {
     companion object {
-        const val BASE_URL = "http://10.0.2.2:3004"
-
-        //const val BASE_URL = "http://lb-interview-1765402036.us-east-1.elb.amazonaws.com"
+        //const val BASE_URL = "http://10.0.2.2:3004"
+        const val BASE_URL = "http://lb-projects-489693910.us-east-1.elb.amazonaws.com"
         var instance: ProjectsAdapter? = null
         fun getInstance(context: Context) =
             instance ?: synchronized(this) {

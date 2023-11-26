@@ -15,7 +15,8 @@ import kotlin.coroutines.suspendCoroutine
 
 class PerformanceAdapter constructor(context: Context){
     companion object {
-        const val BASE_URL = "http://10.0.2.2:3009"
+        //const val BASE_URL = "http://10.0.2.2:3009"
+        const val BASE_URL = "http://lb-performance-2094946372.us-east-1.elb.amazonaws.com"
         var instance: PerformanceAdapter? = null
         fun getInstance(context: Context) =
             instance ?: synchronized(this) {

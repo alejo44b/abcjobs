@@ -19,8 +19,8 @@ import kotlin.coroutines.suspendCoroutine
 
 class TechnicalTestAdapter constructor(context: Context) {
     companion object {
-        const val BASE_URL = "http://10.0.2.2:3006"
-        //const val BASE_URL = "http://lb-tectest-1541669127.us-east-1.elb.amazonaws.com"
+        //const val BASE_URL = "http://10.0.2.2:3006"
+        const val BASE_URL = "http://lb-techtest-617673962.us-east-1.elb.amazonaws.com"
         private var instance: TechnicalTestAdapter? = null
         fun getInstance(context: Context) =
             instance ?: synchronized(this) {

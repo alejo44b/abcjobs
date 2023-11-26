@@ -19,8 +19,8 @@ import kotlin.coroutines.suspendCoroutine
 
 class InterviewAdapter constructor(context: Context) {
     companion object {
-        const val BASE_URL = "http://10.0.2.2:3001"
-        //const val BASE_URL = "http://lb-interview-1765402036.us-east-1.elb.amazonaws.com"
+        //const val BASE_URL = "http://10.0.2.2:3001"
+        const val BASE_URL = "http://lb-interviews-478649349.us-east-1.elb.amazonaws.com"
 
         var instance: InterviewAdapter? = null
         fun getInstance(context: Context) =
