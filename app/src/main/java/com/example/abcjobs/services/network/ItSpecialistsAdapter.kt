@@ -94,64 +94,6 @@ class ItSpecialistsAdapter constructor(context: Context) {
         Volley.newRequestQueue(context.applicationContext)
     }
 
-    suspend fun uploadFile(context: Context, token: String, fileUri: Uri): Boolean = suspendCoroutine { cont ->
-        requestQueue.add(uploadDoc(context, "$BASE_URL/upload_doc", token, fileUri, {
-            cont.resume(true)
-        }
-        ) {
-            cont.resumeWithException(it)
-        })
-    }
-
-    @SuppressLint("Recycle")
-    /*fun uploadDoc(context: Context, token: String, fileUri: Uri) {
-        val inputStream = context.contentResolver.openInputStream(fileUri)
-        val bytes = inputStream?.readBytes()
-        val requestBody = bytes?.toRequestBody("application/octet-stream".toMediaType())
-        val body = requestBody?.let {
-            MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("file", "filename", it)
-                .build()
-        }
-
-        val request = body?.let {
-            okhttp3.Request.Builder()
-                .url("http://127.0.0.1:3002/upload_doc")
-                .post(it)
-                .addHeader("Authorization", "Bearer $token")
-                .build()
-        }
-
-        if (request != null) {
-            client.newCall(request).execute().use { response ->
-                if (!response.isSuccessful) throw IOException("Unexpected code $response")
-            }
-        }
-    }*/
-    private fun uploadDoc(
-        context: Context,
-        path: String,
-        token: String,
-        fileUri: Uri,
-        responseListener: Response.Listener<NetworkResponse>,
-        errorListener: Response.ErrorListener
-    ): Request<NetworkResponse> {
-        return object : VolleyMultipartRequest(
-            Request.Method.POST,
-            BASE_URL + path,
-            responseListener,
-            errorListener,
-            context,
-            fileUri
-        ) {
-            override fun getHeaders(): Map<String, String> {
-                val headers = HashMap<String, String>()
-                headers["Authorization"] = "Bearer $token"
-                return headers
-            }
-        }
-    }
 
     private fun getRequest(path:String, responseListener: Response.Listener<String>, errorListener: Response.ErrorListener): StringRequest {
         return StringRequest(Request.Method.GET, BASE_URL +path, responseListener,errorListener)

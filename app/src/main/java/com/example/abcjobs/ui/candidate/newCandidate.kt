@@ -1,5 +1,7 @@
 package com.example.abcjobs.ui.candidate
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.util.Log
@@ -29,6 +31,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -52,7 +55,11 @@ import com.example.abcjobs.ui.dashboard.SelectF
 import com.google.accompanist.insets.imePadding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.gotev.uploadservice.protocols.multipart.MultipartUploadRequest
+import okhttp3.internal.wait
 import org.json.JSONObject
+import java.io.File
+import java.io.FileOutputStream
 
 @Composable
 fun NewCandidate(navController: NavController, title: MutableState<String>, img: MutableState<Int>) {
@@ -115,39 +122,27 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
         LaunchedEffect(Unit){
             withContext(Dispatchers.IO) {
                 try {
-                    if (ItSpecialistsAdapter.getInstance(context).createItSpecialist(json, token!!)) {
-                        ItSpecialistsAdapter.getInstance(context).uploadFile(
-                            context,
-                            token!!,
-                            docUri.value!!
-                        )
-                        showDialog = true
+                    val filePath = getPathFromUri(context, docUri.value!!, documentos.value)
+                    val file = File(filePath)
+                    if (file.exists()) {
+                        if (ItSpecialistsAdapter.getInstance(context).createItSpecialist(json, token!!)) {
+                            MultipartUploadRequest(context, ItSpecialistsAdapter.BASE_URL+ "/upload_doc")
+                                .addHeader("Authorization", "Bearer $token")
+                                .setMethod("POST")
+                                .addFileToUpload(filePath, "file")
+                                .startUpload()
+                            Log.d("NewCanLogs", "Archivo existe: $filePath")
+                            showDialog = true
+                        }
+                    }else{
+                        Log.d("NewCanLogs", "Archivo no existe: $filePath")
                     }
+
                 }catch (e: Exception){
-                    Log.e("LoginLogs", "Error: ${e.message}")
+                    Log.e("NewCanLogs", "Error: ${e.message}")
                 }
             }
         }
-        /*LaunchedEffect(Unit){
-            ItSpecialistsAdapter.getInstance(context).uploadDoc(
-                context,
-                token!!,
-                docUri.value!!)
-            withContext(Dispatchers.IO) {
-                try {
-                    if (docUri.value != null) {
-                        /*ItSpecialistsAdapter.getInstance(context).uploadFile(
-                            context,
-                            token!!,
-                            docUri.value!!
-                        )*/
-
-                    }
-                }catch (e: Exception){
-                    Log.e("LoginLogs", "Error: ${e.message}")
-                }
-            }
-        }*/
         valid.value = true
         clicked = false
     }
@@ -286,11 +281,23 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
     }
 }
 
+@SuppressLint("Range")
+fun getPathFromUri(context: Context, uri: Uri, name:String): String {
+    val inputStream = context.contentResolver.openInputStream(uri)
+    val tempFile = File(context.cacheDir, name)
+    inputStream?.use { input ->
+        val outputStream = FileOutputStream(tempFile)
+        outputStream.use { output ->
+            input.copyTo(output)
+        }
+    }
+    return tempFile.absolutePath
+}
 @Preview(showBackground = true)
 @Composable
 fun NewCandidatePreview() {
     val context = LocalContext.current
     val title = remember { mutableStateOf(context.getString(R.string.layout_home)) }
-    val img = remember { mutableStateOf(R.drawable.home) }
+    val img = remember { mutableIntStateOf(R.drawable.home) }
     NewCandidate(navController = NavController(context), title = title, img = img)
 }
