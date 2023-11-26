@@ -2,7 +2,6 @@ package com.example.abcjobs.ui.performance
 
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -48,7 +47,6 @@ import com.example.abcjobs.services.network.CompanyAdapter
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.PerformanceAdapter
 import com.example.abcjobs.services.network.ProjectsAdapter
-import com.example.abcjobs.services.network.SelectionAdapter
 import com.example.abcjobs.ui.dashboard.Boton
 import com.example.abcjobs.ui.dashboard.Campo
 import com.example.abcjobs.ui.dashboard.SelectId
@@ -61,7 +59,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -105,21 +102,21 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
 
 
     LaunchedEffect(true){
-        ProjectsAdapter.getInstance(context).getTeams(token!!).forEach {
+        ProjectsAdapter.getInstance(context).getTeams(token?:"").forEach {
             val select = Select(it.id.toInt(), it.teamName)
             teamList.value += select
         }
     }
 
     LaunchedEffect(true){
-        ItSpecialistsAdapter.getInstance(context).getItSpecialists(token!!).forEach {
+        ItSpecialistsAdapter.getInstance(context).getItSpecialists(token?:"").forEach {
             val select = Select(it.id.toInt(), it.name)
             candidateList.value += select
         }
     }
 
     LaunchedEffect(true){
-        company.value = CompanyAdapter.getInstance(context).getCompany(companyId, token!!).name
+        company.value = CompanyAdapter.getInstance(context).getCompany(companyId, token?:"").name
     }
 
     LaunchedEffect(projectId.intValue, teamId.intValue, candidateId.intValue) {
@@ -161,7 +158,7 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
         Text(text = context.getString(R.string.save_test_resultado), modifier = Modifier.padding(10.dp))
         Campo(result, context.getString(R.string.save_test_resultado), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required"))
         Text(text = context.getString(R.string.save_test_comment), modifier = Modifier.padding(10.dp))
-        Campo(comment, context.getString(R.string.save_test_comment), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required"))
+        Campo(comment, context.getString(R.string.save_test_comment), R.drawable.docs, valid = valid)
         Text(text = context.getString(R.string.save_test_date), modifier = Modifier.padding(10.dp))
         Row (
             modifier = Modifier

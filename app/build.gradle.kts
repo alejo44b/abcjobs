@@ -63,6 +63,7 @@ dependencies {
     implementation("androidx.compose.material3:material3")
 
     implementation(platform("androidx.compose:compose-bom:2023.03.00"))
+    implementation("androidx.test.ext:junit-ktx:1.1.5")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
 
@@ -92,5 +93,7 @@ dependencies {
     implementation ("com.google.code.gson:gson:2.9.0")
 
     testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+    testImplementation ("org.robolectric:robolectric:4.6.1")
+    testImplementation ("io.mockk:mockk:1.12.0")
 
 }

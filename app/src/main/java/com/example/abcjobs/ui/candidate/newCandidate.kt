@@ -1,18 +1,17 @@
 package com.example.abcjobs.ui.candidate
 
-import android.content.Intent
+import android.net.Uri
+import android.provider.OpenableColumns
 import android.util.Log
 import androidx.activity.ComponentActivity
-import androidx.compose.foundation.Image
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,48 +19,40 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavController
-import com.example.abcjobs.Dashboard
 import com.example.abcjobs.R
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
-import com.example.abcjobs.services.network.Security
 import com.example.abcjobs.ui.dashboard.Boton
 import com.example.abcjobs.ui.dashboard.Campo
 import com.example.abcjobs.ui.dashboard.CampoMultilinea
-import com.example.abcjobs.ui.dashboard.Select
+import com.example.abcjobs.ui.dashboard.SelectF
 import com.google.accompanist.insets.imePadding
-import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.json.JSONObject
-import java.util.Locale
 
 @Composable
 fun NewCandidate(navController: NavController, title: MutableState<String>, img: MutableState<Int>) {
@@ -77,11 +68,28 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
     val resumen = remember { mutableStateOf("") }
     val documentos = remember { mutableStateOf("") }
 
+    val docUri = remember { mutableStateOf<Uri?>(null) }
+
     var clicked by rememberSaveable { mutableStateOf(false) }
     val valid = remember { mutableStateOf(false) }
 
     val scrollState = rememberScrollState()
     var showDialog by remember { mutableStateOf(false) }
+
+    val pickFileResult = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let {
+            val cursor = context.contentResolver.query(it, null, null, null, null)
+            val nameIndex = cursor?.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+            var name: String? = null
+            if (cursor?.moveToFirst() == true) {
+                name = nameIndex?.let { index -> cursor.getString(index) }
+            }
+            cursor?.close()
+
+            documentos.value = name ?: it.toString()
+            docUri.value = it
+        }
+    }
 
     LaunchedEffect(nombre.value, email.value, nacionalidad.value, profesion.value, especialidad.value, resumen.value) {
         valid.value =
@@ -108,6 +116,11 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
             withContext(Dispatchers.IO) {
                 try {
                     if (ItSpecialistsAdapter.getInstance(context).createItSpecialist(json, token!!)) {
+                        ItSpecialistsAdapter.getInstance(context).uploadFile(
+                            context,
+                            token!!,
+                            docUri.value!!
+                        )
                         showDialog = true
                     }
                 }catch (e: Exception){
@@ -115,6 +128,26 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
                 }
             }
         }
+        /*LaunchedEffect(Unit){
+            ItSpecialistsAdapter.getInstance(context).uploadDoc(
+                context,
+                token!!,
+                docUri.value!!)
+            withContext(Dispatchers.IO) {
+                try {
+                    if (docUri.value != null) {
+                        /*ItSpecialistsAdapter.getInstance(context).uploadFile(
+                            context,
+                            token!!,
+                            docUri.value!!
+                        )*/
+
+                    }
+                }catch (e: Exception){
+                    Log.e("LoginLogs", "Error: ${e.message}")
+                }
+            }
+        }*/
         valid.value = true
         clicked = false
     }
@@ -126,13 +159,13 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
     ){
         Campo(nombre, context.getString(R.string.newCan_name), R.drawable.user, valid = valid, validators = arrayOf("Alphanumeric_es", "Required"))
         Campo(email, context.getString(R.string.email), R.drawable.mail, valid = valid, validators = arrayOf("Email", "Required"))
-        Select(listOf(
+        SelectF(listOf(
             "Colombia",
             "Canada",
             "EE UU",
         ), nacionalidad, R.drawable.nacionalidad)
         Campo(profesion, context.getString(R.string.newCan_profesion), R.drawable.trabajo, valid = valid, validators = arrayOf("Alphanumeric_es", "Required"))
-        Select(listOf(
+        SelectF(listOf(
             ".NET Junior Architect",
             ".NET Semi-Senior Architect",
             ".NET Senior Architect",
@@ -147,6 +180,7 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
             "Java Senior Developer",
         ), especialidad, R.drawable.trabajo)
         CampoMultilinea(resumen, context.getString(R.string.newCan_Resumen), valid = valid, validators = arrayOf("Alphanumeric_es", "Required"))
+        Text(text = context.getString(R.string.newCan_docs), fontSize = 15.sp, modifier = Modifier.padding(10.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -156,7 +190,7 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
         ){
             Row(
                 modifier = Modifier
-                    .fillMaxWidth(0.5f)
+                    .fillMaxWidth(0.7f)
                     .height(50.dp)
                     .clip(RoundedCornerShape(13.dp))
                     .background(color = MaterialTheme.colorScheme.surface)
@@ -168,25 +202,21 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ){
-                Image(
-                    painter = painterResource(id = R.drawable.docs),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(10.dp)
-                )
                 Text(
-                    text = context.getString(R.string.newCan_docs),
+                    text = documentos.value,
                     modifier = Modifier.padding(10.dp),
                     fontSize = 15.sp
                 )
             }
             Button(
-                modifier = Modifier.padding(10.dp),
                 onClick ={
-                    showDialog = false
-                    navController.navigate("home")
+                    pickFileResult.launch("application/pdf")
                 }) {
-                Text(context.getString(R.string.newCan_docs_button))
+                Icon(
+                    imageVector = Icons.Filled.Search,
+                    contentDescription = null,
+                    modifier = Modifier.size(30.dp)
+                )
             }
         }
         Boton(
@@ -234,6 +264,12 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
                             text = context.getString(R.string.newCan_exito),
                             modifier = Modifier.padding(10.dp),
                         )
+                        if (docUri.value != null) {
+                            Text(
+                                text = context.getString(R.string.newCan_exito2),
+                                modifier = Modifier.padding(10.dp),
+                            )
+                        }
                         Button(
                             modifier = Modifier.padding(10.dp),
                             onClick ={

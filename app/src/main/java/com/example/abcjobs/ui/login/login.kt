@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
 import android.util.Log
+import android.view.inputmethod.InputMethodManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,6 +41,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.abcjobs.Dashboard
@@ -66,8 +68,7 @@ fun LoginBody(navController: NavController, application: Application) {
 
     Column (
         modifier = Modifier
-            .fillMaxHeight(1f)
-            .imePadding(),
+            .fillMaxHeight(1f),
         verticalArrangement = Arrangement.Center
     ){
         val username = remember { mutableStateOf("") }
@@ -173,7 +174,11 @@ fun LoginBody(navController: NavController, application: Application) {
                                 putString("language", languageCode)
                                 apply()
                             }
-                            (context as Activity).recreate() },
+                            (context as Activity).recreate()
+                            (context as Activity).apply {
+                                val inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                                inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+                            } },
                         modifier = Modifier
                             .padding(horizontal = 25.dp)
                     )

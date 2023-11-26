@@ -18,7 +18,8 @@ import kotlin.coroutines.resumeWithException
 
 class Security constructor(context: Context) {
     companion object{
-        const val BASE_URL = "http://10.0.2.2:3000"
+        //const val BASE_URL = "http://10.0.2.2:3000"
+        const val BASE_URL = "http://192.168.0.9:3000"
         //const val BASE_URL = "http://lb-secuirity-1765402036.us-east-1.elb.amazonaws.com"
         var instance: Security? = null
         fun getInstance(context: Context) =
@@ -43,7 +44,7 @@ class Security constructor(context: Context) {
             jsonUser,
             { response ->
                 val token = Token(
-                    companyId = response.getInt("companyId"),
+                    companyId = response.optInt("companyId", 0),
                     createdAt = response.getString("createdAt"),
                     email = response.getString("email"),
                     expiredAt = response.getString("expireAt"),

@@ -3,18 +3,12 @@ package com.example.abcjobs.ui.dashboard
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
@@ -196,7 +190,7 @@ fun CampoMultilinea(text: MutableState<String>, labelValue:String, validators: A
 }
 
 @Composable
-fun Select(items: List<String>, selectedItem: MutableState<String>, img: Int) {
+fun SelectF(items: List<String>, selectedItem: MutableState<String>, img: Int) {
     var expanded by remember { mutableStateOf(false) }
     Column(
         modifier = Modifier

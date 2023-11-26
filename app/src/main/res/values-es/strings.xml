@@ -81,4 +81,5 @@
     <string name="layout_performance">Desempeño</string>
     <string name="splash_performances_checked">Performance comprobado</string>
     <string name="splash_performances_not_checked">No hay respuesta de performance</string>
+    <string name="newCan_exito2">El documento ha sido cargado correctamente</string>
 </resources>

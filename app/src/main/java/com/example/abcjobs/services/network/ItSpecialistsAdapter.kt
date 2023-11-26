@@ -1,7 +1,11 @@
 package com.example.abcjobs.services.network
 
+import VolleyMultipartRequest
+import android.annotation.SuppressLint
 import android.content.Context
+import android.net.Uri
 import android.util.Log
+import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
@@ -10,16 +14,24 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.abcjobs.data.models.ItSpecialistId
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import kotlin.coroutines.suspendCoroutine
 
 import org.json.JSONObject
+import java.io.File
+import java.io.IOException
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 
 class ItSpecialistsAdapter constructor(context: Context) {
     companion object{
-        const val BASE_URL = "http://10.0.2.2:3002"
+        //const val BASE_URL = "http://10.0.2.2:3002"
+        const val BASE_URL = "http://192.168.0.9:3002"
         //const val BASE_URL = "http://lb-itspecialist-1174227152.us-east-1.elb.amazonaws.com"
         private var instance: ItSpecialistsAdapter? = null
         fun getInstance(context: Context) =
@@ -29,6 +41,8 @@ class ItSpecialistsAdapter constructor(context: Context) {
                 }
             }
     }
+
+    private val client = OkHttpClient()
 
     suspend fun pong(): Boolean = suspendCoroutine{ cont->
         requestQueue.add(getRequest("",
@@ -79,6 +93,66 @@ class ItSpecialistsAdapter constructor(context: Context) {
     private val requestQueue: RequestQueue by lazy {
         Volley.newRequestQueue(context.applicationContext)
     }
+
+    suspend fun uploadFile(context: Context, token: String, fileUri: Uri): Boolean = suspendCoroutine { cont ->
+        requestQueue.add(uploadDoc(context, "$BASE_URL/upload_doc", token, fileUri, {
+            cont.resume(true)
+        }
+        ) {
+            cont.resumeWithException(it)
+        })
+    }
+
+    @SuppressLint("Recycle")
+    /*fun uploadDoc(context: Context, token: String, fileUri: Uri) {
+        val inputStream = context.contentResolver.openInputStream(fileUri)
+        val bytes = inputStream?.readBytes()
+        val requestBody = bytes?.toRequestBody("application/octet-stream".toMediaType())
+        val body = requestBody?.let {
+            MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("file", "filename", it)
+                .build()
+        }
+
+        val request = body?.let {
+            okhttp3.Request.Builder()
+                .url("http://127.0.0.1:3002/upload_doc")
+                .post(it)
+                .addHeader("Authorization", "Bearer $token")
+                .build()
+        }
+
+        if (request != null) {
+            client.newCall(request).execute().use { response ->
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            }
+        }
+    }*/
+    private fun uploadDoc(
+        context: Context,
+        path: String,
+        token: String,
+        fileUri: Uri,
+        responseListener: Response.Listener<NetworkResponse>,
+        errorListener: Response.ErrorListener
+    ): Request<NetworkResponse> {
+        return object : VolleyMultipartRequest(
+            Request.Method.POST,
+            BASE_URL + path,
+            responseListener,
+            errorListener,
+            context,
+            fileUri
+        ) {
+            override fun getHeaders(): Map<String, String> {
+                val headers = HashMap<String, String>()
+                headers["Authorization"] = "Bearer $token"
+                return headers
+            }
+        }
+    }
+
     private fun getRequest(path:String, responseListener: Response.Listener<String>, errorListener: Response.ErrorListener): StringRequest {
         return StringRequest(Request.Method.GET, BASE_URL +path, responseListener,errorListener)
     }

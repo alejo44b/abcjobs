@@ -108,8 +108,7 @@ fun DrawerMenu(
                                         title = context.getString(R.string.menu_newCandidate),
                                         icon = Icons.Filled.AccountCircle,
                                         contentDescription = context.getString(R.string.menu_newCandidate)
-                                    )
-                                )
+                                    )).toMutableList()
                                 else listOf(
                                     MenuItem(
                                         id = "listTest",
@@ -242,13 +241,13 @@ fun DrawerHeader(){
                 )
                 Column {
                     Text(
-                        text = username!!,
+                        text = username ?: "Usuario desconocido",
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(start = 10.dp),
                         fontSize = 18.sp
                     )
                     Text(
-                        text = role!!,
+                        text = role ?: "Rol desconocido",
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.padding(start = 10.dp),
                         // letra más pequeña
