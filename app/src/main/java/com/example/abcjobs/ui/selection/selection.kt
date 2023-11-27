@@ -57,7 +57,7 @@ import java.time.LocalDateTime
 @Composable
 fun Selection(navController: NavController, title: MutableState<String>, img: MutableState<Int>) {
     val context = LocalContext.current
-    title.value = context.getString(R.string.menu_newCandidate)
+    title.value = context.getString(R.string.selection_title)
     img.value = R.drawable.usuario_logo
 
     val project = remember { mutableStateOf(context.getString(R.string.selection_project)) }
@@ -163,7 +163,7 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
         SelectId(teamList.value.toList(), teamId, team, R.drawable.user)
         SelectId(candidateList.value.toList(), candidateId, candidate, R.drawable.user)
         Boton(
-            context.getString(R.string.newCan_button),
+            context.getString(R.string.selection_button),
             valid = valid,
             onClick = {
                 clicked = true
@@ -204,7 +204,7 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
                             )
                         }
                         Text(
-                            text = context.getString(R.string.newCan_exito),
+                            text = context.getString(R.string.selection_dialog),
                             modifier = Modifier.padding(10.dp),
                         )
                         Button(

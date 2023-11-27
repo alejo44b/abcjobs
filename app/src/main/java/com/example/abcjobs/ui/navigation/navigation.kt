@@ -92,7 +92,7 @@ fun DashboardNavigation(navController: NavHostController, title: MutableState<St
         }
         composable(DashboardScreens.Selection.route){
             val context = LocalContext.current
-            title.value = context.getString(R.string.layout_selection)
+            title.value = context.getString(R.string.selection_title)
             img.value = R.drawable.test
             Selection(navController = navController, title = title , img = img )
         }

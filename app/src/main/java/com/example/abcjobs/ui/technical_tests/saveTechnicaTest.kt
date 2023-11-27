@@ -160,7 +160,7 @@ fun SaveTechnicalTest(navController: NavController, title: MutableState<String>,
         }
 
         Text(text = context.getString(R.string.save_test_resultado), modifier = Modifier.padding(10.dp))
-        Campo(resultado, context.getString(R.string.save_test_resultado), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required"))
+        Campo(resultado, context.getString(R.string.save_test_resultado), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required", "Max50", "Min0"))
 
         Text(text = context.getString(R.string.save_test_date), modifier = Modifier.padding(10.dp))
 

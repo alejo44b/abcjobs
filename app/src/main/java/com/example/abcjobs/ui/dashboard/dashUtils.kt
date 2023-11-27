@@ -66,6 +66,10 @@ fun Campo(text: MutableState<String>, labelValue:String, painter: Int, validator
                 errorMessage = if(validators.contains("Email") && !android.util.Patterns.EMAIL_ADDRESS.matcher(it).matches()) context.getString(
                     R.string.login_asset_email) else errorMessage
                 errorMessage = if(validators.contains("Numeric") && !Pattern.matches("^[0-9]*$", it)) context.getString(R.string.login_asset_numeric) else errorMessage
+                if (it.isNotEmpty() && Pattern.matches("^[0-9]*$", it)){
+                    errorMessage = if(validators.contains("Max50") && it.toInt() > 50) context.getString(R.string.login_asset_max50) else errorMessage
+                    errorMessage = if(validators.contains("Min0") && it.toInt() < 0) context.getString(R.string.login_asset_max50) else errorMessage
+                }
                 errorMessage = if(validators.contains("Required") && it.isEmpty()) context.getString(
                     R.string.login_asset_required) else errorMessage
                 valid.value = errorMessage == null
@@ -80,6 +84,10 @@ fun Campo(text: MutableState<String>, labelValue:String, painter: Int, validator
                         errorMessage = if(validators.contains("Alphanumeric_es") && !Pattern.matches("^[a-zA-Z0-9 ]*$", text.value)) context.getString(R.string.login_asset_alfanumerico) else errorMessage
                         errorMessage = if(validators.contains("Email") && !android.util.Patterns.EMAIL_ADDRESS.matcher(text.value).matches()) context.getString(R.string.login_asset_email) else errorMessage
                         errorMessage = if(validators.contains("Numeric") && !Pattern.matches("^[0-9]*$", text.value)) context.getString(R.string.login_asset_numeric) else errorMessage
+                        if (text.value.isNotEmpty() && Pattern.matches("^[0-9]*$", text.value)){
+                            errorMessage = if(validators.contains("Max50") && text.value.toInt() > 50) context.getString(R.string.login_asset_max50) else errorMessage
+                            errorMessage = if(validators.contains("Min0") && text.value.toInt() < 0) context.getString(R.string.login_asset_max50) else errorMessage
+                        }
                         errorMessage = if(validators.contains("Required") && text.value.isEmpty()) context.getString(R.string.login_asset_required) else errorMessage
                         valid.value = errorMessage == null
                     }

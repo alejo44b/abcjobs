@@ -156,7 +156,7 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
         Text(text = context.getString(R.string.selection_team), modifier = Modifier.padding(10.dp))
         SelectId(teamList.value.toList(), teamId, team, R.drawable.user)
         Text(text = context.getString(R.string.save_test_resultado), modifier = Modifier.padding(10.dp))
-        Campo(result, context.getString(R.string.save_test_resultado), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required"))
+        Campo(result, context.getString(R.string.save_test_resultado), R.drawable.docs, valid = valid, validators = arrayOf("Numeric", "Required", "Max50", "Min0"))
         Text(text = context.getString(R.string.save_test_comment), modifier = Modifier.padding(10.dp))
         Campo(comment, context.getString(R.string.save_test_comment), R.drawable.docs, valid = valid)
         Text(text = context.getString(R.string.save_test_date), modifier = Modifier.padding(10.dp))
@@ -223,7 +223,7 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
         }
 
         Boton(
-            context.getString(R.string.newCan_button),
+            context.getString(R.string.performance_button),
             valid = valid,
             onClick = {
                 clicked = true
@@ -264,7 +264,7 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
                             )
                         }
                         Text(
-                            text = context.getString(R.string.newCan_exito),
+                            text = context.getString(R.string.performance_success),
                             modifier = Modifier.padding(10.dp),
                         )
                         Button(

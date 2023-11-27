@@ -82,4 +82,10 @@
     <string name="splash_performances_checked">Performance comprobado</string>
     <string name="splash_performances_not_checked">No hay respuesta de performance</string>
     <string name="newCan_exito2">El documento ha sido cargado correctamente</string>
+    <string name="login_asset_max50">Máximo 50</string>
+    <string name="selection_title">Selección</string>
+    <string name="selection_button">Registrar Selección</string>
+    <string name="selection_dialog">¡Candidato seleccionado!</string>
+    <string name="performance_button">Registrar Desempeño</string>
+    <string name="performance_success">Revisión de desempeño guardada exitosamente</string>
 </resources>

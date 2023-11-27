@@ -85,4 +85,10 @@
     <string name="splash_performances_checked">Performance checked</string>
     <string name="splash_performances_not_checked">No response from performance</string>
     <string name="newCan_exito2">The document has been uploaded successfully</string>
+    <string name="login_asset_max50">Max 50</string>
+    <string name="selection_title">Selection</string>
+    <string name="selection_button">Add Selection</string>
+    <string name="selection_dialog">Candidate selected!</string>
+    <string name="performance_button">Add Performance</string>
+    <string name="performance_success">Performance review successfully saved!</string>
 </resources>
