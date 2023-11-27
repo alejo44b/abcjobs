@@ -24,7 +24,7 @@ class SelectionTest {
             )
         }
         composeTestRule
-            .onNodeWithText(context.getString(R.string.newCan_button))
+            .onNodeWithText(context.getString(R.string.selection_button))
             .assertExists()
     }
 }

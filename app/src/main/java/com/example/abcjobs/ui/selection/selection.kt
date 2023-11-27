@@ -90,15 +90,15 @@ fun Selection(navController: NavController, title: MutableState<String>, img: Mu
         }
     }
 
-    LaunchedEffect(true){
-        ProjectsAdapter.getInstance(context).getTeams(token?:"").forEach {
+    LaunchedEffect(projectId.intValue){
+        ProjectsAdapter.getInstance(context).getTeams(token?:"", projectId.intValue).forEach {
             val select = Select(it.id.toInt(), it.teamName)
             teamList.value += select
         }
     }
 
-    LaunchedEffect(true){
-        ItSpecialistsAdapter.getInstance(context).getItSpecialists(token?:"").forEach {
+    LaunchedEffect(projectId.intValue){
+        SelectionAdapter.getInstance(context).getItSpecialists(token?:"", projectId.intValue).forEach {
             val select = Select(it.id.toInt(), it.name)
             candidateList.value += select
         }

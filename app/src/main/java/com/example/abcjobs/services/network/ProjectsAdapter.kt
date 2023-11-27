@@ -66,8 +66,8 @@ class ProjectsAdapter constructor(context: Context) {
                 cont.resumeWithException(it)
             }))
     }
-    suspend fun getTeams(token: String): Array<Team> = suspendCoroutine { cont ->
-        requestQueue.add(getRequestJsonArray("/teams",
+    suspend fun getTeams(token: String, id: Int): Array<Team> = suspendCoroutine { cont ->
+        requestQueue.add(getRequestJsonArray("/teams/byProjectId/$id",
             token,
             { response ->
                 val teams = ArrayList<Team>()

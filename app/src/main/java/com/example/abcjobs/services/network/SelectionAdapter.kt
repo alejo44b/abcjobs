@@ -9,9 +9,12 @@ import com.android.volley.toolbox.JsonArrayRequest
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.example.abcjobs.data.models.ItSpecialistId
+import com.example.abcjobs.data.models.Team
 import org.json.JSONArray
 import org.json.JSONObject
 import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
 class SelectionAdapter constructor(context: Context) {
@@ -47,6 +50,57 @@ class SelectionAdapter constructor(context: Context) {
                 cont.resume(true)
             }, {
                 cont.resume(false)
+            }))
+    }
+
+    suspend fun getItSpecialists(token: String, id: Int):Array<ItSpecialistId> = suspendCoroutine { cont ->
+        requestQueue.add(getRequestJsonArray("/selections/get_approved_it_specialists_by_project_id/$id",
+            token,
+            {response ->
+                val itSpecialists = ArrayList<ItSpecialistId>()
+                for (i in 0 until response.length()){
+                    val itSpecialist = response.getJSONObject(i)
+                    itSpecialists.add(
+                        ItSpecialistId(
+                            id = itSpecialist.getInt("itSpecialistId"),
+                            userId = itSpecialist.getInt("companyId"),
+                            name = itSpecialist.getString("itSpecialistName"),
+                            email = itSpecialist.getString("itSpecialistName"),
+                            nationality = itSpecialist.getString("itSpecialistName"),
+                            profession = itSpecialist.getString("itSpecialistName"),
+                            speciality = itSpecialist.getString("itSpecialistName"),
+                            profile = itSpecialist.getString("itSpecialistName")
+                        )
+                    )
+                }
+                cont.resume(itSpecialists.toTypedArray())
+            }, {
+                cont.resumeWithException(it)
+            }))
+    }
+
+    suspend fun getTeams(token: String, id: Int): Array<Team> = suspendCoroutine { cont ->
+        requestQueue.add(getRequestJsonArray("/teams_by_it_specialist_id/$id",
+            token,
+            { response ->
+                val teams = ArrayList<Team>()
+                for(i in 0 until response.length()){
+                    val team = response.getJSONObject(i)
+                    teams.add(
+                        Team(
+                        createdAt = team.getString("name"),
+                        id = team.getDouble("id"),
+                        projectId = team.getDouble("id"),
+                        teamLeader = team.getString("name"),
+                        teamLeaderPhone = team.getDouble("id"),
+                        teamName = team.getString("name")
+                    )
+                    )
+                }
+
+                cont.resume(teams.toTypedArray())
+            }, {
+                cont.resumeWithException(it)
             }))
     }
 

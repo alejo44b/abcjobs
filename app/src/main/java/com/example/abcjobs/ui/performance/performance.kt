@@ -47,6 +47,7 @@ import com.example.abcjobs.services.network.CompanyAdapter
 import com.example.abcjobs.services.network.ItSpecialistsAdapter
 import com.example.abcjobs.services.network.PerformanceAdapter
 import com.example.abcjobs.services.network.ProjectsAdapter
+import com.example.abcjobs.services.network.SelectionAdapter
 import com.example.abcjobs.ui.dashboard.Boton
 import com.example.abcjobs.ui.dashboard.Campo
 import com.example.abcjobs.ui.dashboard.SelectId
@@ -101,8 +102,8 @@ fun Performance(navController: NavController, title: MutableState<String>, img: 
     val datetime = remember { mutableStateOf("${date.value}T${time.value.format(DateTimeFormatter.ofPattern("HH:mm:ss"))}") }
 
 
-    LaunchedEffect(true){
-        ProjectsAdapter.getInstance(context).getTeams(token?:"").forEach {
+    LaunchedEffect(candidateId.intValue){
+        SelectionAdapter.getInstance(context).getTeams(token?:"", candidateId.intValue).forEach {
             val select = Select(it.id.toInt(), it.teamName)
             teamList.value += select
         }

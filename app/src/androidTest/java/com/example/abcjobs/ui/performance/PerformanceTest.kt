@@ -26,7 +26,7 @@ class PerformanceTest {
             )
         }
         composeTestRule
-            .onNodeWithText(context.getString(R.string.newCan_button))
+            .onNodeWithText(context.getString(R.string.performance_button))
             .assertExists()
     }
 }
