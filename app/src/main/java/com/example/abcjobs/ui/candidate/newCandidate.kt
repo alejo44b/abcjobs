@@ -122,22 +122,30 @@ fun NewCandidate(navController: NavController, title: MutableState<String>, img:
         LaunchedEffect(Unit){
             withContext(Dispatchers.IO) {
                 try {
-                    val filePath = getPathFromUri(context, docUri.value!!, documentos.value)
-                    val file = File(filePath)
-                    if (file.exists()) {
-                        if (ItSpecialistsAdapter.getInstance(context).createItSpecialist(json, token!!)) {
-                            MultipartUploadRequest(context, ItSpecialistsAdapter.BASE_URL+ "/upload_doc")
-                                .addHeader("Authorization", "Bearer $token")
-                                .setMethod("POST")
-                                .addFileToUpload(filePath, "file")
-                                .startUpload()
-                            Log.d("NewCanLogs", "Archivo existe: $filePath")
-                            showDialog = true
+                    if (ItSpecialistsAdapter.getInstance(context).createItSpecialist(json, token!!)) {
+                        if (docUri.value != null) {
+                            val filePath = getPathFromUri(context, docUri.value!!, documentos.value)
+                            val file = File(filePath)
+                            if (file.exists()) {
+                                try {
+                                    MultipartUploadRequest(
+                                        context,
+                                        ItSpecialistsAdapter.BASE_URL + "/upload_doc"
+                                    )
+                                        .addHeader("Authorization", "Bearer $token")
+                                        .setMethod("POST")
+                                        .addFileToUpload(filePath, "file")
+                                        .startUpload()
+                                    Log.d("NewCanLogs", "Archivo existe: $filePath")
+                                } catch (e: Exception) {
+                                    Log.e("NewCanLogs", "Error: ${e.message}")
+                                }
+                            }else{
+                                Log.d("NewCanLogs", "Archivo no existe: $filePath")
+                            }
                         }
-                    }else{
-                        Log.d("NewCanLogs", "Archivo no existe: $filePath")
+                        showDialog = true
                     }
-
                 }catch (e: Exception){
                     Log.e("NewCanLogs", "Error: ${e.message}")
                 }
